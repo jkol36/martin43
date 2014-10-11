@@ -23,6 +23,11 @@ SECRET_KEY = 'xmq9e5rkm@s#3g+d4&+v8+cp2@8$wm4)@qlv+92y4jagu3k4=!'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'layers_43/templates')]
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+)
 
 ALLOWED_HOSTS = []
 
@@ -79,4 +84,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATIC_URL = '/assets/'
+STATIC_ROOT = ''
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'assets'),
+)
+

@@ -63,3 +63,6 @@ class Payment(models.Model):
     external_id = models.CharField(max_length=255, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     update = models.ForeignKey(ProjectUpdate, related_name='pmts', null=True)
+
+
+# need to add a post save to send msg to pusher

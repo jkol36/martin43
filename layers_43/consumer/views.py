@@ -17,18 +17,24 @@ def send_message(request):
     return HttpResponse('')
 
 
+# add a photo
+def add_photo(request):
+    # http://django-storages.readthedocs.org/en/latest/
+    return HttpResponse('')
+
+
 # show discussion items before an id
-def discussion_before(request, id):
+def discussion_before(request, msg_id):
     return HttpResponse('')
 
 
 # pay the deposit
-def process_deposit(request):
+def process_payment(request):
     return HttpResponse('')
 
 
-# add photo to idea board
-def add_photo_to_idea_board(request):
+# add photo to inspiration board
+def add_photo_to_inspiration_board(request):
     return HttpResponse('')
 
 

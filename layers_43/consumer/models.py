@@ -6,6 +6,11 @@ from django.contrib.auth.models import User
 class Project(models.Model):
     user = models.ForeignKey(User, related_name='projects', null=True)
     title = models.CharField(max_length=255, null=True)
+    zipcode = models.CharField(max_length=255, null=True)
+    product_type = models.CharField(max_length=255, null=True)
+    order_quantity = models.IntegerField(default=0)
+    materials = models.CharField(max_length=255, null=True)
+    deadline = models.DateField()
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -53,7 +58,8 @@ class ProjectUpdateItem(models.Model):
 
 
 class Payment(models.Model):
-    project = models.ForeignKey(Project, related_name='updates', null=True)
+    project = models.ForeignKey(Project, related_name='payments', null=True)
     success = models.BooleanField(default=False)
     external_id = models.CharField(max_length=255, null=True)
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    update = models.ForeignKey(ProjectUpdate, related_name='pmts', null=True)

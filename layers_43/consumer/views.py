@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django_ajax.decorators import ajax
@@ -57,6 +58,11 @@ def signup(request):
         except Exception, e:
             return HttpResponse('Your email already exists perhaps try logging in.')
     return render(request, 'signup.jade')
+
+#logout view
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 # submit a new design
 @login_required

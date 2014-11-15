@@ -10,4 +10,5 @@ urlpatterns = patterns(
     url(r'^save_project/', views.save_project, name="save_project"),
     url(r'^login', views.login, name="login"),
     url(r'^signup', views.signup, name="signup"),
+    url(r'^logout', views.logout_view, name='logout'),
 )

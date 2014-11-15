@@ -4,6 +4,6 @@ from models import Project
 # Register your models here.
 
 class ProjectAdmin(admin.ModelAdmin):
-	fields = ['user', 'is_submitted', 'budget', 'description']
+	fields = ['user', 'is_submitted', 'budget', 'description', 'deadline']
 
 admin.site.register(Project, ProjectAdmin)

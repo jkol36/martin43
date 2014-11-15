@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'layers_43.consumer',
     'sorl.thumbnail',
+    'django_ajax',
 )
 
 MIDDLEWARE_CLASSES = (

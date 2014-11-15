@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponse
+from django_ajax.decorators import ajax
 from django.contrib.auth.models import User
 from models import Project
 from forms import new_designForm, picture_form, UserForm
@@ -14,9 +15,7 @@ def index(request):
 
 def submit_design(request):
     forms = {'submit_design':new_designForm, 'user_form':UserForm, 'picture_form':picture_form}
-    
     if request.POST:
-        print request.POST
         email = request.POST['email']
         if email:
             user = User.objects.create(email=email, username=email)
@@ -43,9 +42,13 @@ def submit_design(request):
         lookup_user = User.objects.get(username=email)
         new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
         new_project.save()
-        
+    return HttpResponse('Thank you. Your info has been recieved!')
 
     return render(request, 'forms.jade', {'forms':forms})
+@ajax
+def save_project(request):
+    if request:
+        print request
 # show discussion
 def show_discussion(request):
     return HttpResponse('')

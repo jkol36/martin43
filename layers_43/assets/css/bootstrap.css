@@ -120,6 +120,10 @@ textarea {
 button {
   overflow: visible;
 }
+input.form-control {
+  margin-top:5px;
+  margin-bottom:5px;
+}
 button,
 select {
   text-transform: none;

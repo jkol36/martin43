@@ -63,30 +63,15 @@ html(lang='en')
           |           
           ul.nav.navbar-nav.navbar-right
             li
-              a(href='#') Logout
+              a(href='#') Register
         // /.nav-collapse
-
-    .container-fluid(style="margin-top:12px;")
-      .row
-        .col-md-4
-        .col-md-4 
-          h1(style="font-size:1.5em; margin-top:20px;") Start a design Project
+  .container-fluid
+    .row(style="margin-top:15px;") 
       .col-md-4
       .col-md-4
-        .row#submit_new_design
-          form(role="form", method="POST", action="{% url 'submit_design'%}")
-            .form-group
-              {%csrf_token %}
-              {{forms.submit_design}}
-              {{forms.picture_form}}
-            button.btn.btn-success(type="submit", value="submit") Submit
-  
-
-script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
-script(src="{% static 'django_ajax/js/jquery.ajax-plugin.min.js' %}", type="text/javascript")
-script(type="text/javascript", src="{% static 'django_ajax/js/jquery.ajax.min.js' %}")
-script(src="//code.jquery.com/ui/1.11.2/jquery-ui.js")
-script(type="text/javascript").
-  $(document).ready(function() {
-    $('#ship_date').datepicker();
-    });
+        h1(style="font-size:1.8em;") Login
+        form(role="form", action="{% url 'login' %}", method="POST")
+          .form-group
+            input.form-control(type="email", style="margin-top:5px; margin-bottom:5px;", name="email", placeholder="email")
+            input.form-control(type="password", name="password", placeholder="Your Password")
+          button.btn.btn-success(type="submit", value="submit") Login To Awesomeness!

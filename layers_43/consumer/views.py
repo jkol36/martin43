@@ -1,5 +1,7 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login, authenticate
 from django_ajax.decorators import ajax
 from django.contrib.auth.models import User
 from models import Project
@@ -9,19 +11,59 @@ from forms import new_designForm, picture_form, UserForm
 
 # Create your views here.
 def index(request):
-    return render_to_response('index.html', {})
+    if request.user.is_authenticated():
+        return redirect('submit_design')
+    else:
+        return redirect('login')
+
+
+#login view
+
+def login(request):
+    if request.user.is_authenticated():
+        return redirect('submit_design')
+    if request.POST:
+        print request.POST
+        email = request.POST['email']
+        password = request.POST['password']
+        if email and password:
+            user = authenticate(username=email, password=password)
+            if user:
+                auth_login(request, user)
+                return redirect('submit_design')
+            else:
+                return HttpResponse('user with that email/password does not exist')
+        return HttpResponse('You did not submit either an email or password')
+    return render(request, 'login.jade')
+
+#signup view
+
+def signup(request):
+    if request.POST:
+        try:
+            print request.POST
+            email = request.POST['email']
+            password1 = request.POST['password1']
+            password2 = request.POST['password']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            if password1 != password2:
+                return HttpResponse('Your passwords did not match')
+            if "@" not in email:
+                return HttpResponse('You did not type in a valid email address')
+            new_user_instance = User.objects.create_user(username=email, password=password1, first_name=first_name, last_name=last_name)
+            new_user_instance.save()
+            return redirect('login')
+        except Exception, e:
+            return HttpResponse('Your email already exists perhaps try logging in.')
+    return render(request, 'signup.jade')
 
 # submit a new design
-
+@login_required
 def submit_design(request):
     forms = {'submit_design':new_designForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
-        email = request.POST['email']
-        if email:
-            user = User.objects.create(email=email, username=email)
-            user.save()
-        else:
-            return HttpResponse('You did not enter an email address')
+        email = request.user.username
         description = request.POST['description']
         if description:
             print description
@@ -42,7 +84,7 @@ def submit_design(request):
         lookup_user = User.objects.get(username=email)
         new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
         new_project.save()
-    return HttpResponse('Thank you. Your info has been recieved!')
+        return HttpResponse('Thank you. Your info has been recieved!')
 
     return render(request, 'forms.jade', {'forms':forms})
 @ajax

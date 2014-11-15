@@ -1,5 +1,5 @@
 from django.db import models
-
+from sorl.thumbnail import ImageField
 from django.contrib.auth.models import User
 
 
@@ -13,7 +13,8 @@ class Project(models.Model):
     deadline = models.DateField()
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, decimal_places=2)
-
+    photo = ImageField(upload_to="project_pics")
+    is_submitted = models.BooleanField(default=False)
 
 class ProjectUpdate(models.Model):
     """

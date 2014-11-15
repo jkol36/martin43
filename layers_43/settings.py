@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'layers_43.consumer',
+    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,7 +82,28 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_LOADERS = (
+    ('pyjade.ext.django.Loader', (
+    'django.template.loaders.filesystem.Loader', 
+    'django.template.loaders.app_directories.Loader',)),
+    'django.template.loaders.eggs.Loader',
+    )
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'dajaxice.finders.DajaxiceFinder',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages'
+)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 

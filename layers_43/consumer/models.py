@@ -13,8 +13,22 @@ class Project(models.Model):
     deadline = models.DateField()
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = ImageField(upload_to="project_pics")
+    photo = ImageField(upload_to="project_pics", null = True, blank = True, default = False)
     is_submitted = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.description
+    def get_budget(self):
+        return self.budget
+
+    def get_title(self):
+        return __unicode__(self.title)
+
+    def get_deadline(self):
+        return self.deadline
+
+    def get_submitted(self):
+        return self.submitted
 
 class ProjectUpdate(models.Model):
     """

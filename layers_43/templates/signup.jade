@@ -69,6 +69,7 @@ html(lang='en')
     .row(style="margin-top:15px;") 
       .col-md-4
       .col-md-4
+        {% if not design_object %}
         h1(style="font-size:1.8em;") Hello there!
         p(style="font-size:1.2em;") You're seconds away from Awesomeness!
         form(role="form", action="{% url 'signup' %}", method="POST")
@@ -80,3 +81,19 @@ html(lang='en')
             input.form-control(type="name", name="first_name", style="margin-top:5px; margin-bottom:5px;", placeholder="Your First Name")
             input.form-control(type="name", name="last_name", placeholder="Your last Name")
           button.btn.btn-success(type="submit", value="submit") Let's gooo 
+        {%endif %}
+        {% if design_object %}
+        h1(style="font-size:1.8em;") Awesome! Your design project has been saved.
+        p(style="font-size:1.2em;") Please create an account to talk to find interested designers
+        form(role="form", action="{% url 'find_designer' %}", method="POST")
+          .form-group
+            {%csrf_token %}
+            input.form-control(type="hidden", name="design_object", value="{{email}}")  
+            input.form-control(type="password", name="password1", style="margin-top:5px;", placeholder="your password")
+            input.form-control(type="password", name="password2", style="margin-top:5px;", placeholder="Your password again")
+            input.form-control(type="name", name="first_name", style="margin-top:5px;", placeholder="Your first name")
+            input.form-control(type="name", name="last_name", style="margin-top:5px;", placeholder="Your last name")
+          button.btn.btn-success(action="submit", type="submit") Find a designer
+        {%endif%}
+
+          

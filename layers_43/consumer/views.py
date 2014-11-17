@@ -73,6 +73,7 @@ def submit_design(request):
     print authenticated
     forms = {'submit_design':new_designForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
+        print request.FILES
         if authenticated == True:
             try:
                 email = request.user.username
@@ -92,16 +93,14 @@ def submit_design(request):
                     print budget
                 else:
                     pass
-
-                lookup_user = User.objects.get(username=email)
-                new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
-                new_project.save()
                 pictureform = picture_form(request.POST, request.FILES)
                 if pictureform.is_valid():
-                    user_instance = User.objects.get(username=email)
-                    project = Project.objects.get(user=user_instance)
-                    project.photo = request.FILES['photo']
-                    project.save()
+                    pass
+                else:
+                    print pictureform.errors
+                lookup_user = User.objects.get(username=email)
+                new_project = Project.objects.create(user=lookup_user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
+                new_project.save()
                 return HttpResponse('Thank you. Your info has been recieved!')
             except Exception, e:
                 print e
@@ -127,15 +126,20 @@ def submit_design(request):
                     return HttpResponse('No ship date')
                 budget = request.POST['budget']
                 print 'budget'
+                photo = picture_form(request.POST, request.FILES)
+                if photo.is_valid():
+                    pass
+                else:
+                    print photo.errors
                 #check to see if the user already has an account, create an account for them if they don't
                 try:
                     user, created = User.objects.get_or_create(username=email, email=email)
                     if created == True:
-                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
                         created = True
                         return render(request, 'signup.jade', {'design_object':created, 'email':user})
                     else:
-                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
                         created = True
                         return render(request, 'signup.jade', {'design_object':created, 'email':user})
                 #return any errors that may arise during the lookup/create account process

@@ -75,7 +75,7 @@ html(lang='en')
       .col-md-4
         {% if request.user.is_authenticated %}
         .row#submit_new_design
-          form(role="form", method="POST", action="{% url 'submit_design'%}")
+          form(role="form", method="POST", enctype="multipart/form-data", action="{% url 'submit_design'%}")
             .form-group
               {%csrf_token %}
               {{forms.submit_design}}
@@ -84,7 +84,7 @@ html(lang='en')
         {%endif%}
         {% if not request.user.is_authenticated %}
         .row#submit_new_design
-          form(role="form", method="POST", action="{% url 'submit_design' %}")
+          form(role="form", method="POST", enctype="multipart/form-data", action="{% url 'submit_design' %}")
             .form-group
               {%csrf_token%}
               {{forms.submit_design}}

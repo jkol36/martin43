@@ -73,6 +73,7 @@ html(lang='en')
           h1(style="font-size:1.5em; margin-top:20px;") Start a design Project
       .col-md-4
       .col-md-4
+        {% if request.user.is_authenticated %}
         .row#submit_new_design
           form(role="form", method="POST", action="{% url 'submit_design'%}")
             .form-group
@@ -80,6 +81,18 @@ html(lang='en')
               {{forms.submit_design}}
               {{forms.picture_form}}
             button.btn.btn-success(type="submit", value="submit") Submit
+        {%endif%}
+        {% if not request.user.is_authenticated %}
+        .row#submit_new_design
+          form(role="form", method="POST", action="{% url 'submit_design' %}")
+            .form-group
+              {%csrf_token%}
+              {{forms.submit_design}}
+              {{forms.picture_form}}
+              {{forms.user_form}}
+            button.btn.btn-success(type="submit", value="submit") Submit
+        {%endif%}
+        
   
 
 script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")

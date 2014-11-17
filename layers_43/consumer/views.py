@@ -40,6 +40,8 @@ def login(request):
 #signup view
 
 def signup(request):
+    if request.user.is_authenticated():
+        return redirect('submit_design')
     if request.POST:
         try:
             print request.POST
@@ -65,34 +67,81 @@ def logout_view(request):
     return redirect('login')
 
 # submit a new design
-@login_required
 def submit_design(request):
+    user = request.user
+    authenticated = user.is_authenticated()
+    print authenticated
     forms = {'submit_design':new_designForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
-        email = request.user.username
-        description = request.POST['description']
-        if description:
-            print description
-        else:
-            return HttpResponse('You did not give your product a description!')
-        ship_date = request.POST['deadline']
-        if ship_date:
-            month = ship_date[0:2]
-            day = ship_date[3:5]
-            year = ship_date[6:10]
-            format_date = "%s-%s-%s" %(year, month, day)
-        photos = picture_form(request.POST, request.FILES)
-        budget = request.POST['budget']
-        if budget:
-            print budget
-        else:
-            pass
-        lookup_user = User.objects.get(username=email)
-        new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
-        new_project.save()
-        return HttpResponse('Thank you. Your info has been recieved!')
+        if authenticated == True:
+            try:
+                email = request.user.username
+                description = request.POST['description']
+                if description:
+                    print description
+                else:
+                    return HttpResponse('You did not give your product a description!')
+                ship_date = request.POST['deadline']
+                if ship_date:
+                    month = ship_date[0:2]
+                    day = ship_date[3:5]
+                    year = ship_date[6:10]
+                    format_date = "%s-%s-%s" %(year, month, day)
+                photos = picture_form(request.POST, request.FILES)
+                budget = request.POST['budget']
+                if budget:
+                    print budget
+                else:
+                    pass
+                lookup_user = User.objects.get(username=email)
+                new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
+                new_project.save()
+                return HttpResponse('Thank you. Your info has been recieved!')
+            except Exception, e:
+                print e
+
+            return render(request, 'forms.jade', {'forms':forms, 'authenticated':authenticated})
+        elif authenticated == False:
+            print 'authenticated false' 
+            try:
+                email = request.POST['email']
+                print email
+                description = request.POST['description']
+                if description:
+                    print description
+                else:
+                    return HttpResponse('You did not give your product a description!')
+                ship_date = request.POST['deadline']
+                if ship_date:
+                    month = ship_date[0:2]
+                    day = ship_date[3:5]
+                    year = ship_date[6:10]
+                    format_date = "%s-%s-%s" %(year, month, day)
+                else:
+                    return HttpResponse('No ship date')
+                budget = request.POST['budget']
+                print 'budget'
+                #check to see if the user already has an account, create an account for them if they don't
+                try:
+                    user, created = User.objects.get_or_create(username=email, email=email)
+                    if created == True:
+                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        created = True
+                        return redirect('signup', {'design_object':created})
+                    else:
+                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        created = True
+                        return redirect('signup', {'design_object':created})
+                #return any errors that may arise during the lookup/create account process
+                except Exception, e:
+                  print e
+            #return any errors that may occur during the submit form process
+            except Exception, e:
+                print e
 
     return render(request, 'forms.jade', {'forms':forms})
+                    
+
 @ajax
 def save_project(request):
     if request:

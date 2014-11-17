@@ -127,11 +127,11 @@ def submit_design(request):
                     if created == True:
                         add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
                         created = True
-                        return redirect('signup', {'design_object':created})
+                        return render(request, 'signup.jade', {'design_object':created, 'email':user})
                     else:
                         add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
                         created = True
-                        return redirect('signup', {'design_object':created})
+                        return render(request, 'signup.jade', {'design_object':created, 'email':user})
                 #return any errors that may arise during the lookup/create account process
                 except Exception, e:
                   print e
@@ -142,10 +142,35 @@ def submit_design(request):
     return render(request, 'forms.jade', {'forms':forms})
                     
 
-@ajax
-def save_project(request):
-    if request:
-        print request
+def find_designer(request):
+    if request.POST:
+        email = request.POST['design_object']
+        if email:
+            user_instance = User.objects.get(email=email)
+        else:
+            return HttpResponse("email cannot be left blank")
+        first_name = request.POST['first_name']
+        if first_name:
+            user_instance.first_name = first_name
+        else:
+            return HttpResponse("You left first name blank")
+        last_name = request.POST['last_name']
+        if last_name:
+            user_instance.last_name = last_name
+        else:
+            return HttpResponse('you left last name blank!')
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if password1 == password2:
+            user_instance.password = password1
+        else:
+            return HttpResponse("Your passwords did not match.")
+        user_instance.save()
+        print user_instance
+        return HttpResponse("Awesome thanks.")
+
+
+
 # show discussion
 def show_discussion(request):
     return HttpResponse('')

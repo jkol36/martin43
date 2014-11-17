@@ -111,7 +111,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/assets/'
-STATIC_ROOT = ''
+STATIC_ROOT = '/assets'
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "/uploads/")
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 STATICFILES_DIRS = (

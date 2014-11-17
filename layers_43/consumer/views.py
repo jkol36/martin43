@@ -41,7 +41,7 @@ def login(request):
 
 def signup(request):
     if request.user.is_authenticated():
-        return redirect('submit_design')
+        return redirect('idea_bored')
     if request.POST:
         try:
             print request.POST
@@ -86,16 +86,22 @@ def submit_design(request):
                     month = ship_date[0:2]
                     day = ship_date[3:5]
                     year = ship_date[6:10]
-                    format_date = "%s-%s-%s" %(year, month, day)
-                photos = picture_form(request.POST, request.FILES)
+                    format_date = "%s-%s-%s" %(year, month, day)    
                 budget = request.POST['budget']
                 if budget:
                     print budget
                 else:
                     pass
+
                 lookup_user = User.objects.get(username=email)
                 new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
                 new_project.save()
+                pictureform = picture_form(request.POST, request.FILES)
+                if pictureform.is_valid():
+                    user_instance = User.objects.get(username=email)
+                    project = Project.objects.get(user=user_instance)
+                    project.photo = request.FILES['photo']
+                    project.save()
                 return HttpResponse('Thank you. Your info has been recieved!')
             except Exception, e:
                 print e
@@ -141,7 +147,7 @@ def submit_design(request):
 
     return render(request, 'forms.jade', {'forms':forms})
                     
-
+#find designer view
 def find_designer(request):
     if request.POST:
         email = request.POST['design_object']
@@ -169,6 +175,19 @@ def find_designer(request):
         print user_instance
         return HttpResponse("Awesome thanks.")
 
+
+#idea bored
+@login_required
+def idea_bored(request):
+    projects = request.user.projects.all()
+    current_project_status = False
+    start_new_project = False
+    view_design_bored = False
+    if projects:
+        return render(request, 'idea_bored.jade', {'projects':projects})
+    else:
+        pass
+    return render(request, 'idea_bored.jade')
 
 
 # show discussion

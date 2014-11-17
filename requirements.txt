@@ -2,6 +2,7 @@ Django==1.7.1
 Pillow==2.6.1
 django-ajax==2.2.12
 pyjade==3.0.0
+redis==2.10.3
 simplejson==3.6.5
 six==1.8.0
 sorl-thumbnail==12.1c

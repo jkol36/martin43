@@ -13,7 +13,7 @@ class Project(models.Model):
     deadline = models.DateField()
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = ImageField(upload_to="project_pics", null = True, blank = True, default = False)
+    photo = ImageField(upload_to="images/project_pics", null = True, blank = True, default = False)
     is_submitted = models.BooleanField(default=False)
 
     def __unicode__(self):

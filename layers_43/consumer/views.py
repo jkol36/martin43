@@ -6,7 +6,7 @@ from django.contrib.auth import login as auth_login, authenticate
 from django_ajax.decorators import ajax
 from django.contrib.auth.models import User
 from models import Project
-from forms import new_designForm, picture_form, UserForm
+from forms import new_designForm, picture_form, UserForm, PassWordForm
 
 
 
@@ -46,20 +46,27 @@ def signup(request):
         try:
             print request.POST
             email = request.POST['email']
-            password1 = request.POST['password1']
-            password2 = request.POST['password']
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             if password1 != password2:
                 return HttpResponse('Your passwords did not match')
             if "@" not in email:
                 return HttpResponse('You did not type in a valid email address')
-            new_user_instance = User.objects.create_user(username=email, password=password1, first_name=first_name, last_name=last_name)
-            new_user_instance.save()
-            return redirect('login')
+            form = PassWordForm(request.POST)
+            if form.is_valid():
+                password1 = form.cleaned_data['password']
+                print password1
+                password2 = form.cleaned_data['password2']
+                if password1 != password2:
+                    return HttpResponse("Your password's did not match.")
+                else:
+                    new_user_instance = User.objects.create_user(username=email, password=password1, first_name=first_name, last_name=last_name)
+                return redirect('login')
+            
+            
         except Exception, e:
             return HttpResponse('Your email already exists perhaps try logging in.')
-    return render(request, 'signup.jade')
+    return render(request, 'signup.jade', 'forms':forms)
 
 #logout view
 def logout_view(request):
@@ -71,7 +78,7 @@ def submit_design(request):
     user = request.user
     authenticated = user.is_authenticated()
     print authenticated
-    forms = {'submit_design':new_designForm, 'user_form':UserForm, 'picture_form':picture_form}
+    forms = {'submit_design':new_designForm, 'password_form':PassWordForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
         print request.FILES
         if authenticated == True:
@@ -137,11 +144,11 @@ def submit_design(request):
                     if created == True:
                         add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
                         created = True
-                        return render(request, 'signup.jade', {'design_object':created, 'email':user})
+                        return render(request, 'signup.jade', {'design_object':created, 'forms':forms, 'email':user})
                     else:
                         add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
                         created = True
-                        return render(request, 'signup.jade', {'design_object':created, 'email':user})
+                        return render(request, 'signup.jade', {'design_object':created, 'forms':forms, 'email':user})
                 #return any errors that may arise during the lookup/create account process
                 except Exception, e:
                   print e
@@ -184,6 +191,8 @@ def find_designer(request):
 @login_required
 def idea_bored(request):
     projects = request.user.projects.all()
+    for i in projects:
+        print i.photo
     current_project_status = False
     start_new_project = False
     view_design_bored = False

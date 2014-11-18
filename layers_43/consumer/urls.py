@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
-
+from django.conf import settings
 from layers_43.consumer import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = patterns(
@@ -13,3 +14,12 @@ urlpatterns = patterns(
     url(r'^find_designer', views.find_designer, name="find_designer"),
     url(r'^idea_bored', views.idea_bored, name="idea_bored"),
 )
+
+urlpatterns += staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+   )

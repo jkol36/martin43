@@ -76,8 +76,7 @@ html(lang='en')
           {%csrf_token %}
           .form-group
             input.form-control(type="email", style="margin-top:5px; margin-bottom:5px;", name="email", placeholder="Your Email")
-            input.form-control(type="password", name="password", style="margin-top:5px; margin-bottom:5px;", placeholder="Your Password")
-            input.form-control(type="password", name="password1", style="margin-top:5px; margin-bottom:5px;", placeholder="Type it again")
+            {{forms.password_form}}
             input.form-control(type="name", name="first_name", style="margin-top:5px; margin-bottom:5px;", placeholder="Your First Name")
             input.form-control(type="name", name="last_name", placeholder="Your last Name")
           button.btn.btn-success(type="submit", value="submit") Let's gooo 
@@ -89,8 +88,7 @@ html(lang='en')
           .form-group
             {%csrf_token %}
             input.form-control(type="hidden", name="design_object", value="{{email}}")  
-            input.form-control(type="password", name="password1", style="margin-top:5px;", placeholder="your password")
-            input.form-control(type="password", name="password2", style="margin-top:5px;", placeholder="Your password again")
+            {{forms.password_form}}
             input.form-control(type="name", name="first_name", style="margin-top:5px;", placeholder="Your first name")
             input.form-control(type="name", name="last_name", style="margin-top:5px;", placeholder="Your last name")
           button.btn.btn-success(action="submit", type="submit") Find a designer

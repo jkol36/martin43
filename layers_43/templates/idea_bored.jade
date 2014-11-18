@@ -79,5 +79,10 @@ html(lang='en')
         {{i.description}}
         {{i.budget}}
         {{i.deadline}}
+        {{i.photo.url}}
+        {% thumbnail i.photo "300X300" crop="center" as im %}
+        img(src="{{i.photo.url}}")
+        {%endthumbnail%}
+
         {%endfor%}
         {%endif %}

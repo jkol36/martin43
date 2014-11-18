@@ -22,4 +22,9 @@ class UserForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ['email']
-
+class PassWordForm(forms.ModelForm):
+	password1 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'id':'password1', 'class':'form-control', 'name':'password1', 'placeholder':'enter a password'}))
+	password2 = forms.CharField(label="", widget=forms.PasswordInput(attrs={'id':'password2', 'class':'form-control', 'name':'password2', 'placeholder':'enter it again'}))
+	class Meta:
+		model = User
+		fields = ['password1', 'password2']

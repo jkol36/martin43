@@ -55,6 +55,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend'),
+
 ROOT_URLCONF = 'layers_43.urls'
 
 WSGI_APPLICATION = 'layers_43.wsgi.application'
@@ -83,6 +85,19 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATIC_URL = '/assets/'
+STATIC_ROOT = '/assets/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "/uploads/project_pics")
+MEDIA_URL = '/uploads/'
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'assets'),
+)
+
+
 TEMPLATE_LOADERS = (
     ('pyjade.ext.django.Loader', (
     'django.template.loaders.filesystem.Loader', 
@@ -108,15 +123,4 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_URL = '/assets/'
-STATIC_ROOT = '/assets'
-MEDIA_URL = '/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "/uploads/")
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'assets'),
-)
 

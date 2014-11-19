@@ -13,7 +13,6 @@ class Project(models.Model):
     deadline = models.DateField()
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = ImageField(upload_to="images/project_pics", null = True, blank = True, default = False)
     is_submitted = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -49,13 +48,16 @@ class ProjectUpdate(models.Model):
         ('receipt', 'Order receipt'),
         ('status', 'Order status'),
     )
-
+    name = models.CharField(max_length=255, blank=True)
     project = models.ForeignKey(Project, related_name='updates', null=True)
     user = models.ForeignKey(User, related_name='updates', null=True)
     update_type = models.CharField(max_length=6, choices=UPDATE_TYPES)
     message = models.CharField(max_length=255, null=True)
-    amount_required = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_required = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     current_status = models.CharField(max_length=255, null=True)
+
+    def __unicode__(self):
+        return self.update_type
 
 
 class ProjectUpdateItem(models.Model):
@@ -66,11 +68,12 @@ class ProjectUpdateItem(models.Model):
     info for proposals, etc
     etc
     """
-    key = models.CharField(max_length=255, null=True)
-    value = models.CharField(max_length=255, null=True)
-    upload = models.FileField(upload_to="project_images")
+    photo = ImageField(upload_to="images/project_pics", null = True, blank = True, default = False)
     update = models.ForeignKey(ProjectUpdate, related_name='items', null=True)
 
+
+    def __unicode__(self):
+        return self.update.name
 
 class Payment(models.Model):
     project = models.ForeignKey(Project, related_name='payments', null=True)

@@ -15,8 +15,6 @@ urlpatterns = patterns(
     url(r'^idea_bored', views.idea_bored, name="idea_bored"),
 )
 
-urlpatterns += staticfiles_urlpatterns()
-
 if settings.DEBUG:
     urlpatterns += patterns('',
         url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {

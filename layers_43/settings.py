@@ -42,8 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'layers_43.consumer',
-    'sorl.thumbnail',
     'django_ajax',
+    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'layers_43.urls'
 
 WSGI_APPLICATION = 'layers_43.wsgi.application'
 
-
+THUMBNAIL_DEBUG = True
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
@@ -87,16 +87,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_URL = '/assets/'
-STATIC_ROOT = '/assets/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "/uploads/project_pics")
-MEDIA_URL = '/uploads/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads/")
+MEDIA_URL = 'uploads/'
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'assets'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:8001',
+    }
+}
 
 TEMPLATE_LOADERS = (
     ('pyjade.ext.django.Loader', (

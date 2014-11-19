@@ -88,7 +88,6 @@ html(lang='en')
             .form-group
               {%csrf_token%}
               {{forms.submit_design}}
-              {{forms.picture_form}}
               {{forms.user_form}}
             button.btn.btn-success(type="submit", value="submit") Submit
         {%endif%}

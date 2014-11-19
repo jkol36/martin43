@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from models import Project
+from models import Project, ProjectUpdateItem
 from sorl.thumbnail import ImageField
 
 
@@ -13,8 +13,8 @@ class new_designForm(forms.ModelForm):
 		fields = ['description', 'deadline', 'budget']
 class picture_form(forms.ModelForm):
 	class Meta:
-		model= Project
-		exclude = ['user', 'title', 'zipcode', 'product_type', 'order_quantity', 'materials', 'deadline', 'description', 'budget', 'is_submitted']
+		model= ProjectUpdateItem
+		exclude = ['update']
 
 class UserForm(forms.ModelForm):
 	email = forms.CharField(label="Your Email", widget=forms.EmailInput(attrs={'id':'email', 'class':'form-control', 'placeholder':'JonDoe@gmail.com'}))

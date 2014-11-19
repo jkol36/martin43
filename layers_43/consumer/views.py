@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django_ajax.decorators import ajax
 from django.contrib.auth.models import User
-from models import Project
+from models import Project, ProjectUpdateItem, ProjectUpdate
 from forms import new_designForm, picture_form, UserForm, PassWordForm
 
 
@@ -42,20 +42,18 @@ def login(request):
 def signup(request):
     if request.user.is_authenticated():
         return redirect('idea_bored')
+    forms = {'password_form':PassWordForm}
     if request.POST:
         try:
             print request.POST
             email = request.POST['email']
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
-            if password1 != password2:
-                return HttpResponse('Your passwords did not match')
             if "@" not in email:
                 return HttpResponse('You did not type in a valid email address')
             form = PassWordForm(request.POST)
             if form.is_valid():
-                password1 = form.cleaned_data['password']
-                print password1
+                password1 = form.cleaned_data['password1']
                 password2 = form.cleaned_data['password2']
                 if password1 != password2:
                     return HttpResponse("Your password's did not match.")
@@ -63,10 +61,9 @@ def signup(request):
                     new_user_instance = User.objects.create_user(username=email, password=password1, first_name=first_name, last_name=last_name)
                 return redirect('login')
             
-            
         except Exception, e:
-            return HttpResponse('Your email already exists perhaps try logging in.')
-    return render(request, 'signup.jade', 'forms':forms)
+            print e
+    return render(request, 'signup.jade', {'forms':forms})
 
 #logout view
 def logout_view(request):
@@ -100,14 +97,26 @@ def submit_design(request):
                     print budget
                 else:
                     pass
-                pictureform = picture_form(request.POST, request.FILES)
-                if pictureform.is_valid():
-                    pass
-                else:
-                    print pictureform.errors
                 lookup_user = User.objects.get(username=email)
-                new_project = Project.objects.create(user=lookup_user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
+                new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
                 new_project.save()
+                #
+                #if there's a photo submitted we'll create a new projectupdate_object around the newly created project object
+                if request.FILES:
+                    pictureform = picture_form(request.POST, request.FILES)
+                    if pictureform.is_valid():
+                      #get the created project
+                        get_project = Project.objects.get(description=description, budget=budget, deadline=format_date)
+                        new_projectupdate_object =  ProjectUpdate.objects.create(project=get_project, name=description, user=lookup_user, update_type="picture")
+                        new_projectupdate_object.save()
+                        #get the created project update object
+                        get_project_update = ProjectUpdate.objects.get(project=get_project, name=description, user=lookup_user, update_type="picture")
+                        #create a new UpdateItem object
+                        new_projectupdateitem_object= ProjectUpdateItem.objects.create(photo=request.FILES['photo'], update=get_project_update)
+                        new_projectupdateitem_object.save()
+                        print new_projectupdate_object
+                    else:
+                        print pictureform.errors
                 return HttpResponse('Thank you. Your info has been recieved!')
             except Exception, e:
                 print e
@@ -115,6 +124,7 @@ def submit_design(request):
             return render(request, 'forms.jade', {'forms':forms, 'authenticated':authenticated})
         elif authenticated == False:
             print 'authenticated false' 
+            is_created = False
             try:
                 email = request.POST['email']
                 print email
@@ -133,25 +143,45 @@ def submit_design(request):
                     return HttpResponse('No ship date')
                 budget = request.POST['budget']
                 print 'budget'
-                photo = picture_form(request.POST, request.FILES)
-                if photo.is_valid():
-                    pass
-                else:
-                    print photo.errors
                 #check to see if the user already has an account, create an account for them if they don't
                 try:
                     user, created = User.objects.get_or_create(username=email, email=email)
                     if created == True:
-                        add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
-                        created = True
-                        return render(request, 'signup.jade', {'design_object':created, 'forms':forms, 'email':user})
+                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        is_created = True
                     else:
-                        add_project = Project.objects.create(user=user, photo=request.FILES['photo'], description=description, budget=budget, deadline=format_date)
-                        created = True
-                        return render(request, 'signup.jade', {'design_object':created, 'forms':forms, 'email':user})
+                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        is_created = False
                 #return any errors that may arise during the lookup/create account process
                 except Exception, e:
                   print e
+                #now that the users project is created lets see if there was any images in the request.POST
+                if request.FILES:
+                    photo = picture_form(request.POST, request.FILES)
+                    if photo.is_valid():
+                        #get the created object
+                        project = Project.objects.get(user=user, description=description, budget=budget, deadline=format_date)
+                        #create a new ProjectUpdateObject
+                        new_update = ProjectUpdate.objects.create(project=project, name=description, user=user, update_type="picture")
+                        #save the new update object
+                        new_update.save()
+                        get_update_object = ProjectUpdate.objects.get(project=project, name=description, user=user, update_type="picture")
+                        #create a new projectupdateitem object containing the picture uploaded
+                        new_picture = ProjectUpdateItem.objects.create(photo=request.FILES['photo'], update=get_update_object)
+                        new_picture.save()
+                    else:
+                        print photo.errors
+                else:
+                    pass
+                #if a new account was created upon signup. User must complete registration before being allowed to login.
+                if is_created == True:
+                    return render(request, 'signup.jade', {'email':user, 'forms':forms})
+                elif is_created == False:
+                    print "created equal to false"
+                    i = 1
+                    return render(request, 'login.jade', {'design_object': i})
+
+
             #return any errors that may occur during the submit form process
             except Exception, e:
                 print e
@@ -161,30 +191,34 @@ def submit_design(request):
 #find designer view
 def find_designer(request):
     if request.POST:
-        email = request.POST['design_object']
-        if email:
-            user_instance = User.objects.get(email=email)
-        else:
-            return HttpResponse("email cannot be left blank")
-        first_name = request.POST['first_name']
-        if first_name:
-            user_instance.first_name = first_name
-        else:
-            return HttpResponse("You left first name blank")
-        last_name = request.POST['last_name']
-        if last_name:
-            user_instance.last_name = last_name
-        else:
-            return HttpResponse('you left last name blank!')
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        if password1 == password2:
-            user_instance.password = password1
-        else:
-            return HttpResponse("Your passwords did not match.")
-        user_instance.save()
-        print user_instance
-        return HttpResponse("Awesome thanks.")
+        print request.POST
+        try:
+            email = request.POST['email']
+            if email:
+                user_instance = User.objects.get(email=email)
+            else:
+                return HttpResponse("email cannot be left blank")
+            first_name = request.POST['first_name']
+            if first_name:
+                user_instance.first_name = first_name
+            else:
+                return HttpResponse("You left first name blank")
+            last_name = request.POST['last_name']
+            if last_name:
+                user_instance.last_name = last_name
+            else:
+                return HttpResponse('you left last name blank!')
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1 == password2:
+                user_instance.set_password(password1)
+            else:
+                return HttpResponse("Your passwords did not match.")
+            user_instance.save()
+            print user_instance
+        except Exception, e:
+            print e
+        return redirct('login')
 
 
 #idea bored

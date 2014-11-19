@@ -14,13 +14,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('layers_43.consumer.urls')),
 ) 
-
 urlpatterns += staticfiles_urlpatterns()
-
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT,
-        }),
-   )
 

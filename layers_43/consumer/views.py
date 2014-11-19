@@ -218,7 +218,7 @@ def find_designer(request):
             print user_instance
         except Exception, e:
             print e
-        return redirct('login')
+        return redirect('login')
 
 
 #idea bored

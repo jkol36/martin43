@@ -47,6 +47,19 @@ def signup(request):
         try:
             print request.POST
             email = request.POST['email']
+            account = User.objects.filter(username=email)
+            #Check to see if user has an account.
+            if len(account)> 0:
+                #if an account shows up
+                try:
+                    #check to see if the user has a password
+                    account_info = account.values()
+                    if account_info[0]['password'] == "":
+                        pass
+                    else:
+                        return render(request, 'login.jade', {'account':email})
+                except Exception, e:
+                    print e
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             if "@" not in email:
@@ -99,6 +112,7 @@ def submit_design(request):
                     pass
                 lookup_user = User.objects.get(username=email)
                 new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
+                print new_project.id
                 new_project.save()
                 #
                 #if there's a photo submitted we'll create a new projectupdate_object around the newly created project object
@@ -123,11 +137,30 @@ def submit_design(request):
 
             return render(request, 'forms.jade', {'forms':forms, 'authenticated':authenticated})
         elif authenticated == False:
-            print 'authenticated false' 
+            is_user = False
             is_created = False
             try:
                 email = request.POST['email']
-                print email
+                account = User.objects.filter(username=email)
+                #Check to see if user has an account.
+                if len(account)> 0:
+                    #if an account shows up
+                    try:
+                        #check to see if the user has a password
+                        account_info = account.values()
+                        if account_info[0]['password'] == "":
+                            #if they don't have a password, they aren't a real user.
+                          is_user = False
+                        else:
+                            #if they do have password, they are a user
+                            is_user = True
+
+
+                    except Exception, e:
+                        print e
+                else:
+                    pass
+
                 description = request.POST['description']
                 if description:
                     print description
@@ -173,13 +206,21 @@ def submit_design(request):
                         print photo.errors
                 else:
                     pass
-                #if a new account was created upon signup. User must complete registration before being allowed to login.
+                #if a new account was created upon signup or they have an account but haven't instantiated it. User must complete registration before being allowed to login.
                 if is_created == True:
                     return render(request, 'signup.jade', {'email':user, 'forms':forms})
                 elif is_created == False:
-                    print "created equal to false"
-                    i = 1
-                    return render(request, 'login.jade', {'design_object': i})
+                    print is_user
+                    try:
+                        if is_user == True:
+                            i = 1
+                            return render(request, 'login.jade', {'design_object': i})
+                        elif is_user == False:
+                            return render(request, 'signup.jade', {'email':user, 'forms':forms})
+                            
+                    except Exception, e:
+                        print e
+
 
 
             #return any errors that may occur during the submit form process

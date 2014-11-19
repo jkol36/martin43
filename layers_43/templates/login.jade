@@ -69,6 +69,15 @@ html(lang='en')
     .row(style="margin-top:15px;") 
       .col-md-4
       .col-md-4
+        {% if account %}
+        h1(style="font-size:1.8em;") We think you already have an account. Try logging in
+        form(role="form", action="{% url 'login' %}", method="POST")
+          {%csrf_token %}
+          .form-group
+            input.form-control(type="email", style="margin-top:5px; margin-bottom:5px;", name="email", placeholder="email")
+            input.form-control(type="password", name="password", placeholder="Your Password")
+          button.btn.btn-success(type="submit", value="submit") Login
+        {%endif%}
         {% if design_object %}
         h1(style="font-size:1.8em;") Your design project has been saved. Please Login.
         form(role="form", action="{% url 'login' %}", method="POST")
@@ -80,7 +89,7 @@ html(lang='en')
           p don't have an account? 
           a(href="signup") signup
         {%endif %}
-        {% if not design_object %}
+        {% if not design_object and not account %}
         h1(style="font-size:1.8em;") Login
         form(role="form", action="{% url 'login' %}", method="POST")
          {%csrf_token %}

@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
-from django_ajax.decorators import ajax
 from django.contrib.auth.models import User
 from models import Project, ProjectUpdateItem, ProjectUpdate
 from forms import new_designForm, picture_form, UserForm, PassWordForm
@@ -196,9 +195,11 @@ def submit_design(request):
                     if created == True:
                         add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
                         is_created = True
+                        project_id = add_project.id
                     else:
                         add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
                         is_created = False
+                        project_id = add_project.id
                 #return any errors that may arise during the lookup/create account process
                 except Exception, e:
                   print e
@@ -206,16 +207,18 @@ def submit_design(request):
                 if request.FILES:
                     photo = picture_form(request.POST, request.FILES)
                     if photo.is_valid():
-                        #get the created object
-                        project = Project.objects.get(user=user, description=description, budget=budget, deadline=format_date)
-                        #create a new ProjectUpdateObject
-                        new_update = ProjectUpdate.objects.create(project=project, name=description, user=user, update_type="picture")
-                        #save the new update object
-                        new_update.save()
-                        get_update_object = ProjectUpdate.objects.get(project=project, name=description, user=user, update_type="picture")
-                        #create a new projectupdateitem object containing the picture uploaded
-                        new_picture = ProjectUpdateItem.objects.create(photo=request.FILES['photo'], update=get_update_object)
-                        new_picture.save()
+                        for f in request.FILES.getlist("photo"):
+                            #get the created object
+                            project = Project.objects.get(id=project_id)
+                            #create a new ProjectUpdateObject
+                            new_update = ProjectUpdate.objects.create(project=project, name=title, user=user, update_type="picture")
+                            update_id = new_update.id
+                            #save the new update object
+                            new_update.save()
+                            get_update_object = ProjectUpdate.objects.get(id=update_id, update_type="picture")
+                            #create a new projectupdateitem object containing the picture uploaded
+                            new_picture = ProjectUpdateItem.objects.create(photo=f, update=get_update_object)
+                            new_picture.save()
                     else:
                         print photo.errors
                 else:

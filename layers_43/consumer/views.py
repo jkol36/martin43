@@ -91,6 +91,7 @@ def submit_design(request):
     forms = {'submit_design':new_designForm, 'password_form':PassWordForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
         print request.FILES
+        print request.POST
         if authenticated == True:
             try:
                 email = request.user.username
@@ -99,43 +100,49 @@ def submit_design(request):
                     print description
                 else:
                     return HttpResponse('You did not give your product a description!')
-                ship_date = request.POST['deadline']
+                ship_date = request.POST['due_date']
                 if ship_date:
                     month = ship_date[0:2]
                     day = ship_date[3:5]
                     year = ship_date[6:10]
                     format_date = "%s-%s-%s" %(year, month, day)    
-                budget = request.POST['budget']
+                budget = request.POST['budget_to']
                 if budget:
                     print budget
                 else:
                     pass
+                title = request.POST['title']
                 lookup_user = User.objects.get(username=email)
-                new_project = Project.objects.create(user=lookup_user, description=description, budget=budget, deadline=format_date)
-                print new_project.id
+                new_project = Project.objects.create(user=lookup_user, title=title, description=description, budget=budget, deadline=format_date)
+                project_id = new_project.id
+                print "new project id %d" %(project_id)
                 new_project.save()
                 #
                 #if there's a photo submitted we'll create a new projectupdate_object around the newly created project object
                 if request.FILES:
                     pictureform = picture_form(request.POST, request.FILES)
                     if pictureform.is_valid():
-                      #get the created project
-                        get_project = Project.objects.get(description=description, budget=budget, deadline=format_date)
-                        new_projectupdate_object =  ProjectUpdate.objects.create(project=get_project, name=description, user=lookup_user, update_type="picture")
-                        new_projectupdate_object.save()
-                        #get the created project update object
-                        get_project_update = ProjectUpdate.objects.get(project=get_project, name=description, user=lookup_user, update_type="picture")
-                        #create a new UpdateItem object
-                        new_projectupdateitem_object= ProjectUpdateItem.objects.create(photo=request.FILES['photo'], update=get_project_update)
-                        new_projectupdateitem_object.save()
-                        print new_projectupdate_object
-                    else:
-                        print pictureform.errors
+                        for f in request.FILES.getlist('photo'):
+                          #get the created project
+                            get_project = Project.objects.get(id=project_id)
+                            new_projectupdate_object =  ProjectUpdate.objects.create(project=get_project, user=user, name=title, update_type="picture")
+                            update_id = new_projectupdate_object.id
+                            print "update id %d" %(update_id) 
+                            new_projectupdate_object.save()
+                            #get the created project update object
+                            get_project_update = ProjectUpdate.objects.get(id=update_id)
+                            print "project update"
+                            #create a new UpdateItem object
+                            new_projectupdateitem_object= ProjectUpdateItem.objects.create(photo=f, update=get_project_update)
+                            new_projectupdateitem_object.save()
+                            print new_projectupdate_object
+                        else:
+                            print pictureform.errors
                 return HttpResponse('Thank you. Your info has been recieved!')
             except Exception, e:
                 print e
 
-            return render(request, 'forms.jade', {'forms':forms, 'authenticated':authenticated})
+            return render(request, 'idea.jade', {'forms':forms, 'authenticated':authenticated})
         elif authenticated == False:
             is_user = False
             is_created = False
@@ -166,7 +173,12 @@ def submit_design(request):
                     print description
                 else:
                     return HttpResponse('You did not give your product a description!')
-                ship_date = request.POST['deadline']
+                title = request.POST['title']
+                if title:
+                    print title
+                else:
+                    return HttpResponse("You did not give your product a title")
+                ship_date = request.POST['due_date']
                 if ship_date:
                     month = ship_date[0:2]
                     day = ship_date[3:5]
@@ -174,16 +186,18 @@ def submit_design(request):
                     format_date = "%s-%s-%s" %(year, month, day)
                 else:
                     return HttpResponse('No ship date')
-                budget = request.POST['budget']
+                budget_to = request.POST['budget_to']
+                budget_from = request.POST['budget_from']
+
                 print 'budget'
                 #check to see if the user already has an account, create an account for them if they don't
                 try:
                     user, created = User.objects.get_or_create(username=email, email=email)
                     if created == True:
-                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
                         is_created = True
                     else:
-                        add_project = Project.objects.create(user=user, description=description, budget=budget, deadline=format_date)
+                        add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
                         is_created = False
                 #return any errors that may arise during the lookup/create account process
                 except Exception, e:
@@ -227,7 +241,7 @@ def submit_design(request):
             except Exception, e:
                 print e
 
-    return render(request, 'forms.jade', {'forms':forms})
+    return render(request, 'idea.jade', {'forms':forms,})
                     
 #find designer view
 def find_designer(request):

@@ -16,7 +16,7 @@ class Project(models.Model):
     is_submitted = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.description
+        return self.title
     def get_budget(self):
         return self.budget
 

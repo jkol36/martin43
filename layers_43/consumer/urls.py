@@ -13,6 +13,8 @@ urlpatterns = patterns(
     url(r'^logout', views.logout_view, name='logout'),
     url(r'^find_designer', views.find_designer, name="find_designer"),
     url(r'^idea_bored', views.idea_bored, name="idea_bored"),
+    url(r'^send_message', views.send_message, name="send_message"),
+    url(r'^submit_photo', views.add_photo, name="submit_photo"),
 )
 
 if settings.DEBUG:

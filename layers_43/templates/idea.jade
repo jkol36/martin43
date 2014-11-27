@@ -45,119 +45,121 @@ html(lang='en')
             li
               a(href='login.html') Log in
     .container
-      h1.step Step 1: Submit Your Idea
-      .row.text-center.process
-        .col-md-3
-          h3
-            | 1. Submit Your Idea
-            a.submit.center-block(href='#submit') &nbsp;
-        .col-md-3
-          h3
-            | 2. Meet Your Designer
-            a.meet.center-block(href='#meet') &nbsp;
-        .col-md-3
-          h3
-            | 3. View Digital Preview
-            a.view.center-block(href='#view') &nbsp;
-        .col-md-3
-          h3
-            | 4. Hold In Your Hands
-            a.hold.center-block(href='#hold') &nbsp;
+      block block1
+        h1.step Step 1: Submit Your Idea
+        .row.text-center.process
+          .col-md-3
+            h3
+              | 1. Submit Your Idea
+              a.submit.center-block(href='#submit') &nbsp;
+          .col-md-3
+            h3
+              | 2. Meet Your Designer
+              a.meet.center-block(href='#meet') &nbsp;
+          .col-md-3
+            h3
+              | 3. View Digital Preview
+              a.view.center-block(href='#view') &nbsp;
+          .col-md-3
+            h3
+              | 4. Hold In Your Hands
+              a.hold.center-block(href='#hold') &nbsp;
       br
       br
-      .row
-        .col-md-4
-          h3 Backgroud Information
-        .col-md-8
-          p
-            | Fill out the form below to describe you product idea. This brief will be reviewed and used by your designer to bring your ideas to life.
-        form(role="form", action="{% url 'submit_design'%}", enctype="multipart/form-data", method="POST")
-          {% csrf_token %} 
-          .form-group
-            .row
-              .col-md-8.col-md-offset-4
-                br
-                br
-                label Give your project a one sentence title*
-                input.form-control(type='text', name='title', placeholder='e.g. Bridesmaid Necklaces or Baby Shower Table Centerpieces.')
-            .row
-              .col-md-8.col-md-offset-4
-                br
-                br
-                label Product Description*
-                textarea.form-control(type='text', name='description', placeholder='This brief will be used by your designer to bring your idea to life, so the more specific the better.')
-            .row
-              .col-md-8.col-md-offset-4
-                br
-                br
-                label Due Date
-                input.form-control(type='text', id="datepicker", name='due_date', placeholder='When do you need to receive this order by?')
-            .row
-              .col-md-8.col-md-offset-4
-                br
-                br
-                label Budget
-                br
-                input.budget(type='text', name='budget_from', placeholder='$100')
-                span to 
-                input.budget(type='text', name='budget_to', placeholder='$100')
-            {%if not request.user.is_authenticated %}
-            .row
-              .col-md-8.col-md-offset-4
-                br
-                br
-                label Your email
-                br
-                input.form-control(type="email", name="email", placeholder="jonDoe@gmail.com")
-            {%endif%}
-            br
-            br
-            .row
-              .col-md-4
-                h3 Inspiration board
-              .col-md-8
-                p
-                  | Post photos or sketches to the inspiration board below and annotate them to further describe your product to your designer.
-            br
-            br
-            .row
-              .col-md-3
+      block forms
+        .row
+          .col-md-4
+            h3 Backgroud Information
+          .col-md-8
+            p
+              | Fill out the form below to describe you product idea. This brief will be reviewed and used by your designer to bring your ideas to life.
+          form(role="form", action="{% url 'submit_design'%}", enctype="multipart/form-data", method="POST")
+            {% csrf_token %} 
+            .form-group
+              .row
+                .col-md-8.col-md-offset-4
+                  br
+                  br
+                  label Give your project a one sentence title*
+                  input.form-control(type='text', name='title', placeholder='e.g. Bridesmaid Necklaces or Baby Shower Table Centerpieces.')
+              .row
+                .col-md-8.col-md-offset-4
+                  br
+                  br
+                  label Product Description*
+                  textarea.form-control(type='text', name='description', placeholder='This brief will be used by your designer to bring your idea to life, so the more specific the better.')
+              .row
+                .col-md-8.col-md-offset-4
+                  br
+                  br
+                  label Due Date
+                  input.form-control(type='text', id="datepicker", name='due_date', placeholder='When do you need to receive this order by?')
+              .row
+                .col-md-8.col-md-offset-4
+                  br
+                  br
+                  label Budget
+                  br
+                  input.budget(type='text', name='budget_from', placeholder='$100')
+                  span to 
+                  input.budget(type='text', name='budget_to', placeholder='$100')
+              {%if not request.user.is_authenticated %}
+              .row
+                .col-md-8.col-md-offset-4
+                  br
+                  br
+                  label Your email
+                  br
+                  input.form-control(type="email", name="email", placeholder="jonDoe@gmail.com")
+              {%endif%}
+              br
+              br
+              .row
+                .col-md-4
+                  h3 Inspiration board
+                .col-md-8
+                  p
+                    | Post photos or sketches to the inspiration board below and annotate them to further describe your product to your designer.
+              br
+              br
+              .row
+                .col-md-3
+                    {%csrf_token %}
+                    img(src="http://placehold.it/300x300")
+                    {{forms.picture_form}}
+                .col-md-3
                   {%csrf_token %}
                   img(src="http://placehold.it/300x300")
                   {{forms.picture_form}}
-              .col-md-3
-                {%csrf_token %}
-                img(src="http://placehold.it/300x300")
-                {{forms.picture_form}}
-              .col-md-3
-                {%csrf_token %}
-                img(src="http://placehold.it/300x300")
-                {{forms.picture_form}}
-              .col-md-3
-                {%csrf_token %}
-                img(src="http://placehold.it/300x300")
-                {{forms.picture_form}}
-            br
-            br
-          {% if request.user.is_authenticated %}
-          .row
-            .col-md-4
-              h3 Submit or save
-            .col-md-8
-              p Are you ready to start your design project?
-              p
-                | Click submit if you are ready to begin. Click Save if you want to keep brainstorming and come back to your project at a later date.
-              button.btn.btn-primary(type="submit", value="submit") Submit
-              button.btn.btn-secondary Save
-          {% endif %}
-          {% if not request.user.is_authenticated %}
-          .row
-            .col-md-4
-              h3 Submit
-            .col-md-8
-              p You are seconds away from talking to a designer
-              button.btn.btn-primary(type="submit", value="submit") Submit
+                .col-md-3
+                  {%csrf_token %}
+                  img(src="http://placehold.it/300x300")
+                  {{forms.picture_form}}
+                .col-md-3
+                  {%csrf_token %}
+                  img(src="http://placehold.it/300x300")
+                  {{forms.picture_form}}
+              br
+              br
+            {% if request.user.is_authenticated %}
+            .row
+              .col-md-4
+                h3 Submit or save
+              .col-md-8
+                p Are you ready to start your design project?
+                p
+                  | Click submit if you are ready to begin. Click Save if you want to keep brainstorming and come back to your project at a later date.
+                button.btn.btn-primary(type="submit", value="submit") Submit
+                button.btn.btn-secondary Save
             {% endif %}
+            {% if not request.user.is_authenticated %}
+            .row
+              .col-md-4
+                h3 Submit
+              .col-md-8
+                p You are seconds away from talking to a designer
+                button.btn.btn-primary(type="submit", value="submit") Submit
+              {% endif %}
     .footer.container-fluid
       .row
         .col-md-4

@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.models import User
 from models import Project, ProjectUpdateItem, ProjectUpdate
-from forms import new_designForm, picture_form, UserForm, PassWordForm
+from forms import new_designForm, picture_form, UserForm, PassWordForm, recipientForm, projectForm
+from layers_43.messaging.models import Message
 
 
 
@@ -279,6 +280,7 @@ def find_designer(request):
         return redirect('login')
 
 
+
 #idea bored
 @login_required
 def idea_bored(request):
@@ -302,13 +304,15 @@ def show_discussion(request):
 
 # send a simple text based message
 def send_message(request):
-    return HttpResponse('')
+    if not request.user.is_authenticated():
+        return redirect('login')
+    return render(request, 'send_message.jade', {'recipient':recipientForm(user=request.user), 'project_form':projectForm(user=request.user.id)})
 
 
 # add a photo
 def add_photo(request):
     # http://django-storages.readthedocs.org/en/latest/
-    return HttpResponse('')
+    return render(request, 'submit_photo.jade')
 
 
 # show discussion items before an id

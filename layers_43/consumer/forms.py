@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from models import Project, ProjectUpdateItem
+from layers_43.messaging.models import Message
 from sorl.thumbnail import ImageField
 
 
@@ -28,3 +29,22 @@ class PassWordForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ['password1', 'password2']
+
+class recipientForm(forms.ModelForm):
+	def __init__(self, user, *args, **kwargs):
+		super(recipientForm, self).__init__(*args, **kwargs)
+		change_class = self.fields['recipient'].widget.attrs['class'] = "form-control"
+		
+	class Meta:
+		model = Message
+		exclude = ["text", 'sender', 'project']
+		
+class projectForm(forms.ModelForm):
+	def __init__(self, user, *args, **kwargs):
+		super(projectForm, self).__init__(*args, **kwargs)
+		self.fields['project'] = forms.ModelChoiceField(queryset = Project.objects.filter(user=user))
+		change_class = self.fields['project'].widget.attrs['class'] = "form-control"
+
+	class Meta:
+		model = Message
+		exclude = ['text','recipient', 'sender']	

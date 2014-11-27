@@ -1,0 +1,30 @@
+extends idea.jade
+block block1
+	h1.step Send Message
+block forms
+	form(role="form", action="{% url 'send_message' %}", method="POST")
+		.form-group	
+			.row
+				.col-md-4
+					h3 Select a Recipient 
+				.col-md-8
+					{{recipient}}
+		
+			.row 
+				.col-md-4
+					h3 Enter a message
+				.col-md-8
+					textarea.form-control(rows=5, id="text_message", placeholder="Enter a Message")
+			.row 
+				.col-md-4
+					h3 Which project does this coorespond to?
+				.col-md-8
+					{{project_form}}
+			.row
+				.col-md-4
+					h3 Submit
+				.col-md-8
+					button.btn.btn-primary(type="submit", value="submit") Send
+
+
+

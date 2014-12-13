@@ -304,8 +304,6 @@ def show_discussion(request):
 
 # send a simple text based message
 def send_message(request):
-    if not request.user.is_authenticated():
-        return redirect('login')
     return render(request, 'send_message.jade', {'recipient':recipientForm(user=request.user), 'project_form':projectForm(user=request.user.id)})
 
 

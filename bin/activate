@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/Jon/Documents/43Layers-Beta"
+VIRTUAL_ENV="/Users/jonathankolman/webapps/43Layers-Beta"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

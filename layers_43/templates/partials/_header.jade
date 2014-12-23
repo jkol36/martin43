@@ -1,0 +1,22 @@
+nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+  .container
+    .navbar-header
+      button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#collapsed-nav")
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand.navbar-right(href="index.html")
+        img(src="{{STATIC_URL}}icons/Main_nav_logo_blk_180px.png", height="41px", width="140px")
+    .collapse.navbar-collapse#collapsed-nav
+      ul.nav.navbar-nav.navbar-right
+        li
+          a(href='design.html') Design
+        li
+          a(href='about.html') About
+        li
+          a(href='faq.html') FAQ
+        li
+          a(href='blog.html') Blog
+        li
+          a.btn.btn-default(href='login.html') Log in

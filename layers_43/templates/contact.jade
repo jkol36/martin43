@@ -1,0 +1,48 @@
+extends ./partials/_base.jade
+
+block title
+  title 43 Layers - Contact
+
+block content
+  include ./partials/_header.jade
+  .content
+    .contact-page
+      .container
+        .row
+          .col-md-6.col-md-offset-3
+            h1.text-center Contact Us
+            p.text-center
+              | We&rsquo;d love to hear from you. Send us a note and we&apos;ll get back to you as soon as we possibly can.
+
+            ul.list-unstyled.contact-details
+              li.text-center
+                i.fa.fa-envelope(style="color:white; padding-right:5px;")
+                a(href='mailto:contact@43layers.com', style="color:#20cb92;") contact@43layers.com
+              li.text-center
+                i.fa.fa-phone-square(style="color:white; padding-right:5px;")
+                | 260-639-4343
+      
+            form.form-contact(accept-charset='UTF-8', action='/ajax/inquiry', method='post')
+              input(name='utf8', type='hidden', value='✓')
+              input(name='authenticity_token', type='hidden', value='INSwWYJn0d5ZZjpHJrY4srgu/SzsZC37GUdPZ5HYUZM=')
+              input#customer_source(type='hidden', name='inquiry[source]', value='CONTACT FORM')
+              .form-group.name
+                label.sr-only(for='name') Name
+                input#name.form-control(type='text', placeholder='Name', name='inquiry[name]')
+              .form-group.email
+                label.sr-only(for='email') Email
+                input#email.form-control(type='email', placeholder='Email', name='inquiry[email]')
+              .form-group.message
+                label.sr-only(for='message') Message
+                textarea#message.form-control(rows='6', placeholder='Message', name='inquiry[message]')
+              button.btn.btn-primary.btn-center(type='submit') Send Message
+        .row.text-center
+          a(href='https://www.facebook.com/pages/43Layers/273568439486440')
+            img(src='{{STATIC_URL}}icons/Facebook_icon_50px.png')
+          a(href='https://twitter.com/43Layers')
+            img(src='{{STATIC_URL}}icons/Twitter_icon_50px.png')
+          a(href='http://instagram.com/43layers')
+            img(src='{{STATIC_URL}}icons/Instagram_icon_50px.png')
+          a(href='http://www.pinterest.com/43layers')
+            img(src='{{STATIC_URL}}icons/Pintrest_icon_50px.png')
+  include ./partials/_footer.jade

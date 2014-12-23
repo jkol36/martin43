@@ -1,0 +1,56 @@
+extends ./partials/_base.jade
+
+block title
+  title 43Layers - Inspiration Board
+
+block content
+  include  ./partials/_header.jade
+  .content
+    .submit-your-idea
+      h1.text-center Step 1: Submit Your Idea (Cont.)
+      .container
+        .row.text-center.process
+          .col-md-3
+            h3 1. Submit Your Idea
+              a.submit.center-block
+          .col-md-3
+            h3 2. Meet Your Designer
+              a.meet.center-block
+          .col-md-3
+            h3 3. View Digital Preview
+              a.view.center-block
+          .col-md-3
+            h3 4. Hold In Your Hands
+              a.hold.center-block
+        ul.nav.nav-pills.process-mobile
+          li.active
+          li
+          li
+          li
+        .row
+          .col-md-4
+            h2 Inspiration Board
+          .col-md-8
+            p
+              | Post photos or sketches to the inspiration board below and annotate them to further describe your product to your designer.
+        .row
+          .col-md-8.col-md-offset-4
+            form(action="{% url 'submit_photo'%}", method="POST").dropzone#inspirationBoard
+              - csrf_token
+              input(type="hidden", name="pk", value="{{pk}}")
+              input(type="hidden", name="user", value="{{user}}")
+        .row
+          .col-md-4
+            h2 Submit or Save
+          .col-md-8
+            p Are you ready to start your design project?
+            ul
+             li Click Submit if you are ready to begin.
+             li Click Save if you want to keep brainstorming and come back to your project at a later date.
+        .row
+          .col-md-8.col-md-offset-4
+            button.btn.btn-xlarge.btn-primary(type="submit", form="inspirationBoard") Submit
+            button.btn.btn-xlarge.btn-secondary(type="submit", form="inspirationBoard") Save
+            
+  include ./partials/_footer.jade
+

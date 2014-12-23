@@ -10,9 +10,9 @@ class Project(models.Model):
     product_type = models.CharField(max_length=255, null=True)
     order_quantity = models.IntegerField(default=0)
     materials = models.CharField(max_length=255, null=True)
-    deadline = models.DateField()
+    deadline = models.DateField(null = True, blank=True)
     description = models.CharField(max_length=255, null=True)
-    budget = models.DecimalField(max_digits=10, decimal_places=2)
+    budget = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=2)
     is_submitted = models.BooleanField(default=False)
 
     def __unicode__(self):

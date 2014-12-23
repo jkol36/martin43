@@ -1,0 +1,163 @@
+extends ./partials/_base.jade
+
+block title
+  title 43Layers - My Account
+
+block content
+  include  ./partials/_header.jade
+  .content
+    .container
+      .my-account
+        h1.text-center My Account
+        .profile#profile
+          .row
+            .col-md-3
+              img.profile-picture(src='images/Deer_stir_products_page.jpg')
+            .col-md-7
+              .row
+                .col-md-12
+                  h3.name Tester McTesty
+                .col-md-12
+                  p.description
+                    | Room for 100 word description here... More words in this description. Even more words.
+                    | Room for 100 word description here... More words in this description. Even more words.
+                    | Room for 100 word description here... More words in this description. Even more words.
+                    | Room for 100 word description here... More words in this description. Even more words.
+                .col-md-12
+                  .row
+                    .col-md-7
+                      | San Francisco, California
+                    .col-md-5.social
+                        a(href='https://www.facebook.com/pages/43Layers/273568439486440')
+                          img(src='icons/facebook_black.png')
+                        a(href='https://twitter.com/43Layers')
+                          img(src='icons/twitter_black.jpeg')
+                        a(href='http://instagram.com/43layers')
+                          img(src='icons/instagram_black.gif')
+                        a(href='http://www.pinterest.com/43layers')
+                          img(src='icons/pinterest_black.png')
+            .col-md-2
+              button(type="submit").btn.btn-default.btn-block Edit Profile
+        .row
+          .col-md-3
+            h2 Menu
+            .menu
+              ul.menu-links
+                li
+                  a(href="#profile") My Profile
+                li
+                  a(href="#notifications") Notifications
+                li
+                  a(href="#current-projects") Current Projects
+                li
+                  a(href="#order-history") Order History
+                li
+                  a(href="#settings") Settings
+          .col-md-9
+            h2 Notifications
+            .notifications#notifications
+              ul
+                li Your designer has submitted a rendering.
+                li You have submitted your deposit and started your project.
+                li You have been assigned a designer.
+                li You submitted project: "Keys to Love". We are in the process of finding  you an expert designer to bring your project to life.
+                li Welcome to 43Layers! Thanks for signing up!
+                li
+                  a(href="#") More
+            .current-projects#current-projects
+              h2 Current Projects
+              .table-responsive
+                table.table
+                  tr
+                    th Project Name
+                    th Order #
+                    th Designer
+                    th Due Date
+                    th Status
+                    th
+                  tr
+                    td Keys to Love
+                    td 12345678
+                    td Diego Taccioli
+                    td 9/12/2014
+                    td Shipping
+                    td
+                      a(href="#") View
+                  tr
+                    td Jewelry Nails
+                    td 12345678
+                    td Diego Taccioli
+                    td 9/25/2014
+                    td Design
+                    td
+                      a(href="#") View
+            .order-history#order-history
+              h2 Order History
+              .table-responsive
+                table.table
+                  tr
+                    th Project Name
+                    th Order #
+                    th Designer
+                    th Arrival Date
+                    th Status
+                    th Rating
+                  tr
+                    td Monograph Napkin Holder
+                    td 12345678
+                    td Diego Taccioli
+                    td 8/12/2014
+                    td On Time
+                    td
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star-empty
+                  tr
+                    td Wedding This Way Sign
+                    td 12345678
+                    td Diego Taccioli
+                    td 8/5/2014
+                    td On Time
+                    // TODO: Add actual star rating
+                    td
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+                      span(aria-hidden="true").glyphicon.glyphicon-star
+            .settings#settings
+              h2 Settings
+              form.form-horizontal
+                .form-group
+                  label(for="email").col-sm-3.control-label Email
+                  div.col-sm-6
+                    input(type="email" placeholder="Email").form-control#email
+                .form-group
+                  label(for="email").col-sm-3.control-label Notification Emails
+                  div.col-sm-6
+                    label.radio-inline
+                      input(type="radio" name="notifications" value="yes")
+                      | Yes
+                    label.radio-inline
+                      input(type="radio" name="notifications" value="no")
+                      | No
+                .form-group
+                  label(for="email").col-sm-3.control-label Newsletter
+                  div.col-sm-6
+                    label.radio-inline
+                      input(type="radio" name="newsletter" value="yes")
+                      | Yes
+                    label.radio-inline
+                      input(type="radio" name="newsletter" value="no")
+                      | No
+                .form-group
+                  .col-sm-4.col-sm-offset-3
+                    button(type="submit").btn.btn-secondary Cancel
+                    button(type="submit").btn.btn-primary Save
+                  .col-sm-2.col-sm-offset-1
+                    button(type="submit").btn.btn-default Deactivate Account
+                    
+
+  include ./partials/_footer.jade

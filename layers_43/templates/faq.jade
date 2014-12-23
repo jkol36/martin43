@@ -1,0 +1,308 @@
+extends ./partials/_base.jade
+
+block title
+  title 43Layers - FAQ
+
+block content
+  include ./partials/_header.jade
+  .content
+    .container
+      .faq
+        h1.text-center FAQ
+              h2.text-center General
+              .panel-group
+              
+                // What is 43Layers?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-is-43-layers", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What is 43Layers?
+                  .panel-collapse.collapse.out#what-is-43-layers(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | 43Layers is the only marketplace and community where users can design and make truly custom products that are both high quality and affordable.
+
+                  
+                // How does the process work?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-does-the-process-work", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How does the process work?
+                  .panel-collapse.collapse.out#how-does-the-process-work(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | The first step of the process is filling out your design brief. As soon as you know what you want to make, click Get Started and start filling out our design brief where you will answer a series of questions describing your product and add any pictures or sketches you think that will help articulate what you are trying to make. When you finish, click “submit” and we will connect you with a world-class industrial designer who will help bring your product to life.
+                      p.answer
+                        | Once you are assigned to a designer, you will talk about the product you want to make, asking any questions you might have and communicating anything else you need to say about the product to make sure you and your designer are on the same page.
+                      p.answer
+                        | In the next stage of the process, your designer will provide a digital rendering or preview of your product. This will look very similar to the final product so this is your chance to tell the designer what you like and what you would like to change. You and your designer will then iterate on the design until you are in love with your design.
+                      p.answer
+                        | Finally, once you are happy with the design, you choose the material you want it made in and finalize the order. You will then be charged, the item will be sent to manufacturing and then shipped to you.
+
+                                                
+                // What if I don't have any design experience whatsoever?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-if-i-dont-have-design-experience", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What if I don't have any design experience whatsoever?
+                  .panel-collapse.collapse.out#what-if-i-dont-have-design-experience(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | You are in luck. At 43Layers we believe that the most important part of design is the meaning behind the product, not the drawing, plan or model itself. It is our goal to enable the design and manufacturing of products specifically for YOU, so whether you majored in Industrial Design or have never touched any design software in your life, our goal is to make design and manufacturing easy and accessible so you can bring your ideas and the meaning behind them to life.
+
+
+                // Why is 43Layers so good at customization? 
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#why-is-43layers-good-at-customization", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") Why is 43Layers so good at customization? 
+                  .panel-collapse.collapse.out#why-is-43layers-good-at-customization(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | At 43Layers, all of our products are made using digital fabrication technology. This means all of our products are designed with computer aided design software and then manufactured with software powered manufacturing tools (for now primarily 3D printing and laser cutting). Just like an MP3 is a digital version of a song, we create designs that are digital versions of a physical product. We then use 3D printing and laser cutting and turn those designs into physical objects. These products are infinitely easier to customize than with traditional manufacturing because the product design itself is digital so any customization we need to do can be done with software and it will be manufactured precisely to spec.
+
+
+                // How does 3D printing work?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-does-3d-printing-work", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How does 3d printing work?
+                  .panel-collapse.collapse.out#how-does-3d-printing-work(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | 3D Printing takes digital files and turns them into physical products. It is often referred to as additive manufacturing, as the product is built up layer by layer in the material of your choosing. 3D Printing refers to several different processes that are applied based on the specific material type, including the most popular, selective laser sintering.
+
+
+                // How does laser cutting work?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-does-laser-cutting-work", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How does laser cutting work?
+                  .panel-collapse.collapse.out#how-does-laser-cutting-work(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Laser cutting is a precise method of cutting a design from a given material using a computer aided design (CAD) file to guide it. Laser cutting uses a computer to direct the output high-power laser at a given material to be cut. The material then melts, burns or vaporizes leaving an edge with a high-quality finish.
+
+
+                // What type of material can I 3D print and Laser Cut with?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-materials-can-I-3d-print-and-lasercut", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What type of material can I 3D print and Laser Cut with?
+                  .panel-collapse.collapse.out#what-materials-can-I-3d-print-and-lasercut(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Today our manufacturing partners allow for a variety of material options and they add new ones regularly. For 3D printing, the following materials are currently available: Plastic, Wax, Nylon, Sandstone, Ceramic, Steel (Various finishes), Bronze (Various finishes), Brass (Various finishes), Silver (Various finishes), and 14K Gold (Various finishes) and platinum. For laser cutting, the following materials are available today: wood (various types and finishes), acrylic, paper, leather and fabric.
+
+  
+                // Who designs these projects?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#who-designs-these-projects", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") Who designs these projects?
+                  .panel-collapse.collapse.out#who-designs-these-projects(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | All 43Layers products are designed by our community members in conjunction with our network of world-class freelance industrial designers.
+
+
+                // Where are your production facilities located?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#where-are-your-facilities-located", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") Where are your production facilities located?
+                  .panel-collapse.collapse.out#where-are-your-facilities-located(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Today our products are made by best-in-class manufacturing partners around the world who use industrial size 3D Printers and laser cutters to create your products, often in combination with post-processing, like dyeing and polishing. When we can, we try to produce locally to ensure you get your order in a timely manner, at the lowest possible cost, and with a minimal carbon footprint. 
+
+
+                // How long does the process take?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-long-does-the-process-take", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How long does the process take?
+                  .panel-collapse.collapse.out#how-long-does-the-process-take(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | We recommend you give the process at least 4-6 weeks total; 3-4 weeks for manufacturing and shipping and 1-2 weeks for the design). In many cases, the product can ship out faster than our suggested lead-time and we are constantly working with our suppliers to try to speed the process up.
+
+
+                // I loved a design used by another user. Can I order the same thing?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#can-i-order-the-same-thing", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") I loved a design used by another user. Can I order the same thing?
+                  .panel-collapse.collapse.out#can-i-order-the-same-thing(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Yes, in most cases, if you like a design made by another user, you can order the same product; however, you can also add your own personal touch if you like. We encourage it.
+
+              h2.text-center Ordering & Payment
+              .panel-group
+                // How can I pay for my product?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-can-i-pay", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How can I pay for my product?
+                  .panel-collapse.collapse.out#how-can-i-pay(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      h3 PayPal
+                      p.answer
+                        | Orders may be paid for via PayPal as long as PayPal is available in your country. Check PayPal to see where it is available. 
+                      p.answer
+                        | Please refer to PayPal for payment limits, countries that accept PayPal, disputes, and other terms.
+                      h3 Credit Card
+                      p.answer
+                        | Orders shipping to the United States or Canada can be paid for by using American Express, Discover, MasterCard, or VISA. 
+
+
+                // Can I add a product to an existing order?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#can-i-add-a-product-to-an-existing-order", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") Can I add a product to an existing order?
+                  .panel-collapse.collapse.out#can-i-add-a-product-to-an-existing-order(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Once you have placed your order, you cannot add any new products to it. However, up to the moment your order is about to go into production, you may simply cancel it and restart the order process.
+
+
+                // My order arrived but there's a problem with it.
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#problems-with-my-order", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") My order arrived but there's a problem with it.
+                  .panel-collapse.collapse.out#problems-with-my-order(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Oh no! We're truly sorry to hear that. Please get in touch with our customer service team at contact@43layers.com and they'll help you out!
+  
+                // What happens after I place an order?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-happends-after-i-place-an-order", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What happens after I place an order?
+                  .panel-collapse.collapse.out#what-happends-after-i-place-an-order(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | After you place an order, our 3D printing and laser cutting experts will manually review every item to make sure we can manufacture it successfully. Once it is deemed to be viable for making, we manufacture products using the most advanced 3D printing and laser cutting technology available. Then, we inspect the quality of each product, carefully package it, and send it your way.
+                      p.answer
+                        | Given the complex nature of converting digital files into physical products, every now and then we catch designs that are too fragile to create in which case we will work with you to fix the design or give you your money back.
+
+                // When will I be charged?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#when-will-i-be-charged", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") When will I be charged?
+                  .panel-collapse.collapse.out#when-will-i-be-charged(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | When you start a design project we will put a hold on your credit card or PayPal account for half of the total design budget. When you accept the final design and price from your designer, we will put an authorization hold for the remainder of your design budget. We only actually charge your payment after we have reviewed and accepted your final order for production or after 7 calendar days (the longest we can hold the authorization), whichever is sooner. While we expect most items to be reviewed within 7 days, some items may take longer to review.
+                      p.answer
+                        | If at any point we determine that we cannot manufacture an item in your order, you will not have to pay for it. If we have not yet processed your payment, you will not be charged for the item. If we have already processed your payment, we will issue you a refund.
+
+
+                // What happens if you can't make my product?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-happens-if-you-cant-make-my-product", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What happens if you can't make my product?
+                  .panel-collapse.collapse.out#what-happens-if-you-cant-make-my-product(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Given the complex nature of converting digital files into physical products, every now and then we catch designs that are too fragile to create.
+                      p.answer
+                        | If at any point we determine that we cannot manufacture an item in your order, you will not have to pay for it. If we have not yet processed your payment, you will not be charged for the item. If we have already processed your payment, we will issue you a refund.
+
+
+                // How does 43Layers process refunds?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-does-43-layers-process-refunds", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How does 43Layers process refunds?
+                  .panel-collapse.collapse.out#how-does-43-layers-process-refunds(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Refunds for credit card, PayPal or bank transfer payments are issued in the original form of payment and will reflect the amount paid. It may take 3-7 business days for the refund to appear in your account. Orders paid with store credit, gift cards, or promotional dollars will be returned in that form.
+                      p.answer
+                        | We may contact you to obtain additional information if necessary. In certain cases where we determine a refund is not appropriate, we may issue store credit.
+
+
+                // My order is late. What can I do?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#my-order-is-late", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") My order is late what can I do?
+                  .panel-collapse.collapse.out#my-order-is-late(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | Please get in touch with our customer service team at contact@43layers.com and they'll take over from there!
+
+
+                // How can I change or cancel my order?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-can-i-change-or-cancel-my-order", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") How can I change or cancel my order?
+                  .panel-collapse.collapse.out#how-can-i-change-or-cancel-my-order(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | All 43Layers products are made-to-order. Once an item goes into production, we can no longer change or cancel it.
+                      p.answer
+                        | If we haven't yet started production on any of the items in your order, you may cancel your entire order.
+
+
+                // What is your return policy?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#what-is-your-return-policy", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") What is your return policy?
+                  .panel-collapse.collapse.out#what-is-your-return-policy(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | We are 100% committed to your satisfaction, and if for some reason there is an issue with your order, we'll do our best to find a good solution.
+                      p.answer
+                        | If you have any issues with your order, please contact our customer service team at contact@43layers.com, and they'll be happy to help you. In order for us to resolve your issue as quickly as possible, we ask that you describe the issue in detail and, if possible, provide pictures. This will make it easier for us to help you, and to help us improve the quality of our products.
+                      p.answer
+                        | For quality assurance issues, we will work with you to either manufacture your product again, or provide a refund.
+                      p.answer
+                        | For any issues involving platinum, gold, or silver, you must return the product to us in order to receive a refund or to have it manufactured again. Our Customer Service Team will send you information on how to return the product.
+                      p.answer
+                        | We do not provide refunds for products that have been used, altered, or damaged after you've received the shipment.
+
+              h2.text-center Other
+              .panel-group
+                // I have another question? How do I contact 43Layers?
+                .panel.panel-default
+                  .panel-heading
+                    .panel-title
+                      li
+                        a.question(href="#how-do-i-contact-43-layers", data-toggle="collapse", aria-expanded="true", aria-controls="collapseGeneral") I have another question. How do I contact 43Layers?
+                  .panel-collapse.collapse.out#how-do-i-contact-43-layers(role="tabpanel", aria-labeledby="collapseGeneral")
+                    .panel-body
+                      p.answer
+                        | We're happy to help! Just shoot us an email at contact@43layers.com.
+
+  include ./partials/_footer.jade

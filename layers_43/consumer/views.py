@@ -1,6 +1,9 @@
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth import logout
+from django.views.generic.base import RedirectView
+from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.models import User
@@ -15,7 +18,7 @@ def index(request):
     if request.user.is_authenticated():
         return redirect('submit_design')
     else:
-        return redirect('login')
+        return render(request, 'index.jade')
 
 
 #login view
@@ -39,44 +42,28 @@ def login(request):
 
 #signup view
 
+def create_user(self, username, password_1, password_2):
+    if password_1 ==  password_2:
+        password = password_1
+        create_or_get_user, _ = User.objects.get_or_create(username=username, email=username)
+        create_or_get_user.set_password(password)
+        create_or_get_user.save()
+        return create_or_get_user
+    else:
+        return HttpResponse(request, "passwords dont match")
 def signup(request):
     if request.user.is_authenticated():
         return redirect('idea_bored')
-    forms = {'password_form':PassWordForm}
     if request.POST:
-        try:
-            print request.POST
-            email = request.POST['email']
-            account = User.objects.filter(username=email)
-            #Check to see if user has an account.
-            if len(account)> 0:
-                #if an account shows up
-                try:
-                    #check to see if the user has a password
-                    account_info = account.values()
-                    if account_info[0]['password'] == "":
-                        pass
-                    else:
-                        return render(request, 'login.jade', {'account':email})
-                except Exception, e:
-                    print e
-            first_name = request.POST['first_name']
-            last_name = request.POST['last_name']
-            if "@" not in email:
-                return HttpResponse('You did not type in a valid email address')
-            form = PassWordForm(request.POST)
-            if form.is_valid():
-                password1 = form.cleaned_data['password1']
-                password2 = form.cleaned_data['password2']
-                if password1 != password2:
-                    return HttpResponse("Your password's did not match.")
-                else:
-                    new_user_instance = User.objects.create_user(username=email, password=password1, first_name=first_name, last_name=last_name)
-                return redirect('login')
-            
-        except Exception, e:
-            print e
-    return render(request, 'signup.jade', {'forms':forms})
+        print request.POST
+        username = request.POST['email']
+        password_1 = request.POST['password1']
+        password_2 = request.POST['password2']
+        new_user = create_user(request, username=username, password_1=password_1, password_2=password_2)
+        return redirect('login')
+    else:
+        return render(request, 'signup.jade')
+
 
 #logout view
 def logout_view(request):
@@ -84,201 +71,55 @@ def logout_view(request):
     return redirect('login')
 
 # submit a new design
+# user redirected from landing page via get_started button. Or redirect by submit_new_design in my account.
 def submit_design(request):
     user = request.user
     authenticated = user.is_authenticated()
-    print authenticated
-    forms = {'submit_design':new_designForm, 'password_form':PassWordForm, 'user_form':UserForm, 'picture_form':picture_form}
     if request.POST:
-        print request.FILES
-        print request.POST
-        if authenticated == True:
-            try:
-                email = request.user.username
-                description = request.POST['description']
-                if description:
-                    print description
-                else:
-                    return HttpResponse('You did not give your product a description!')
-                ship_date = request.POST['due_date']
-                if ship_date:
-                    month = ship_date[0:2]
-                    day = ship_date[3:5]
-                    year = ship_date[6:10]
-                    format_date = "%s-%s-%s" %(year, month, day)    
-                budget = request.POST['budget_to']
-                if budget:
-                    print budget
-                else:
-                    pass
-                title = request.POST['title']
-                lookup_user = User.objects.get(username=email)
-                new_project = Project.objects.create(user=lookup_user, title=title, description=description, budget=budget, deadline=format_date)
-                project_id = new_project.id
-                print "new project id %d" %(project_id)
-                new_project.save()
-                #
-                #if there's a photo submitted we'll create a new projectupdate_object around the newly created project object
-                if request.FILES:
-                    pictureform = picture_form(request.POST, request.FILES)
-                    if pictureform.is_valid():
-                        for f in request.FILES.getlist('photo'):
-                          #get the created project
-                            get_project = Project.objects.get(id=project_id)
-                            new_projectupdate_object =  ProjectUpdate.objects.create(project=get_project, user=user, name=title, update_type="picture")
-                            update_id = new_projectupdate_object.id
-                            print "update id %d" %(update_id) 
-                            new_projectupdate_object.save()
-                            #get the created project update object
-                            get_project_update = ProjectUpdate.objects.get(id=update_id)
-                            print "project update"
-                            #create a new UpdateItem object
-                            new_projectupdateitem_object= ProjectUpdateItem.objects.create(photo=f, update=get_project_update)
-                            new_projectupdateitem_object.save()
-                            print new_projectupdate_object
-                        else:
-                            print pictureform.errors
-                return HttpResponse('Thank you. Your info has been recieved!')
-            except Exception, e:
-                print e
-
-            return render(request, 'idea.jade', {'forms':forms, 'authenticated':authenticated})
-        elif authenticated == False:
-            is_user = False
-            is_created = False
-            try:
-                email = request.POST['email']
-                account = User.objects.filter(username=email)
-                #Check to see if user has an account.
-                if len(account)> 0:
-                    #if an account shows up
-                    try:
-                        #check to see if the user has a password
-                        account_info = account.values()
-                        if account_info[0]['password'] == "":
-                            #if they don't have a password, they aren't a real user.
-                          is_user = False
-                        else:
-                            #if they do have password, they are a user
-                            is_user = True
+        #Split the submitted content on white space. Part before the white space is the first name
+        #portion after the white space is the last name
+        first_name = request.POST.get('name').split()[0]
+        last_name = request.POST.get('name').split()[1]
+        description = request.POST.get('description')
+        title = request.POST.get('title')
+        budget = request.POST.get('budget_to')
+        due_date= request.POST.get('due_date')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            messages.error(request, "password don't match")
+        else:
+            password = password1
+        new_user_object, created = User.objects.get_or_create(username=email, email=email, first_name=first_name, last_name=last_name)
+        #save the user_id for User object lookup later on
+        user_id = new_user_object.id
+        #set the password to the submitted password if both password1 and password2 match
+        new_user_object.set_password(password)
+        #save the object
+        new_user_object.save()
+        #Get the newly created user object
+        get_new_user_object = User.objects.get(pk=user_id)
+        #create a new project with a relationship to the user object
+        new_project_object, created = Project.objects.get_or_create(title=title, description=description, budget=budget, deadline=due_date, user=get_new_user_object)
+        #store the project_id for later lookup
+        project_id = new_project_object.id
+        #save the project
+        new_project_object.save()
+        #return inspiration.jade with the project_id and user_id
+        return render(request, 'inspiration.jade', {'pk':project_id, 'user':user_id})
 
 
-                    except Exception, e:
-                        print e
-                else:
-                    pass
-
-                description = request.POST['description']
-                if description:
-                    print description
-                else:
-                    return HttpResponse('You did not give your product a description!')
-                title = request.POST['title']
-                if title:
-                    print title
-                else:
-                    return HttpResponse("You did not give your product a title")
-                ship_date = request.POST['due_date']
-                if ship_date:
-                    month = ship_date[0:2]
-                    day = ship_date[3:5]
-                    year = ship_date[6:10]
-                    format_date = "%s-%s-%s" %(year, month, day)
-                else:
-                    return HttpResponse('No ship date')
-                budget_to = request.POST['budget_to']
-                budget_from = request.POST['budget_from']
-
-                print 'budget'
-                #check to see if the user already has an account, create an account for them if they don't
-                try:
-                    user, created = User.objects.get_or_create(username=email, email=email)
-                    if created == True:
-                        add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
-                        is_created = True
-                        project_id = add_project.id
-                    else:
-                        add_project = Project.objects.create(user=user, title=title, description=description, budget=budget_to, deadline=format_date)
-                        is_created = False
-                        project_id = add_project.id
-                #return any errors that may arise during the lookup/create account process
-                except Exception, e:
-                  print e
-                #now that the users project is created lets see if there was any images in the request.POST
-                if request.FILES:
-                    photo = picture_form(request.POST, request.FILES)
-                    if photo.is_valid():
-                        for f in request.FILES.getlist("photo"):
-                            #get the created object
-                            project = Project.objects.get(id=project_id)
-                            #create a new ProjectUpdateObject
-                            new_update = ProjectUpdate.objects.create(project=project, name=title, user=user, update_type="picture")
-                            update_id = new_update.id
-                            #save the new update object
-                            new_update.save()
-                            get_update_object = ProjectUpdate.objects.get(id=update_id, update_type="picture")
-                            #create a new projectupdateitem object containing the picture uploaded
-                            new_picture = ProjectUpdateItem.objects.create(photo=f, update=get_update_object)
-                            new_picture.save()
-                    else:
-                        print photo.errors
-                else:
-                    pass
-                #if a new account was created upon signup or they have an account but haven't instantiated it. User must complete registration before being allowed to login.
-                if is_created == True:
-                    return render(request, 'signup.jade', {'email':user, 'forms':forms})
-                elif is_created == False:
-                    print is_user
-                    try:
-                        if is_user == True:
-                            i = 1
-                            return render(request, 'login.jade', {'design_object': i})
-                        elif is_user == False:
-                            return render(request, 'signup.jade', {'email':user, 'forms':forms})
-                            
-                    except Exception, e:
-                        print e
-
-
-
-            #return any errors that may occur during the submit form process
-            except Exception, e:
-                print e
-
-    return render(request, 'idea.jade', {'forms':forms,})
+    return render(request, 'idea.jade')
                     
 #find designer view
 def find_designer(request):
-    if request.POST:
-        print request.POST
-        try:
-            email = request.POST['email']
-            if email:
-                user_instance = User.objects.get(email=email)
-            else:
-                return HttpResponse("email cannot be left blank")
-            first_name = request.POST['first_name']
-            if first_name:
-                user_instance.first_name = first_name
-            else:
-                return HttpResponse("You left first name blank")
-            last_name = request.POST['last_name']
-            if last_name:
-                user_instance.last_name = last_name
-            else:
-                return HttpResponse('you left last name blank!')
-            password1 = request.POST['password1']
-            password2 = request.POST['password2']
-            if password1 == password2:
-                user_instance.set_password(password1)
-            else:
-                return HttpResponse("Your passwords did not match.")
-            user_instance.save()
-            print user_instance
-        except Exception, e:
-            print e
-        return redirect('login')
-
+   designers = User.objects.filter(is_designer = True, available=True)
+   if designers:
+        return render(request, 'main.jade', {'designers':designers})
+   else:
+        messages.errors(request, "Sorry, no designers are available. We'll notify you as soon as one becomes available.")
+        
 
 
 #idea bored
@@ -291,10 +132,10 @@ def idea_bored(request):
     start_new_project = False
     view_design_bored = False
     if projects:
-        return render(request, 'idea_bored.jade', {'projects':projects})
+        return render(request, 'inspiration.jade', {'projects':projects})
     else:
         pass
-    return render(request, 'idea_bored.jade')
+    return render(request, 'inspiration.jade')
 
 
 # show discussion
@@ -307,17 +148,63 @@ def send_message(request):
     return render(request, 'send_message.jade', {'recipient':recipientForm(user=request.user), 'project_form':projectForm(user=request.user.id)})
 
 
-# add a photo
-def add_photo(request):
+# add a phot
+def inspiration_view(request):
+
     # http://django-storages.readthedocs.org/en/latest/
-    return render(request, 'submit_photo.jade')
+    return render(request, 'inspiration.jade')
+
+def add_photo(request):
+    if request.FILES:
+        #project id for lookup
+        project_id = request.POST['pk']
+        #user id for lookup
+        user_id = request.POST.get('user')
+        project = Project.objects.get(pk=project_id)
+        for f in request.FILES.getlist('file'):
+            user = User.objects.get(pk=user_id)
+            #a new update's taking place. In this case it's a picture.
+            #create a new update
+            new_update = ProjectUpdate.objects.create(project=project, name="picture", user=user, update_type="picture")
+            #save the update object id for lookup
+            new_update_id = new_update.id
+            #save the projectupdate
+            new_update.save()
+            #get the update using the id
+            get_update = ProjectUpdate.objects.get(pk=new_update_id)
+            #add a new picture object
+            new_picture = ProjectUpdateItem.objects.create(photo=f, update = get_update)
+            #save the picture object
+            new_picture.save()
+        messages.success(request, "Success!")
+    return HttpResponse('success')
 
 
-# show discussion items before an id
+    
+
+
+
+
+
 def discussion_before(request, msg_id):
     return HttpResponse('')
 
+#my account view
 
+def my_account(request):
+    user_instance = request.user
+    projects = Project.objects.filter(user=request.user)
+    messages_to = Message.objects.filter(sender = request.user)
+    messages_recieved = Message.objects.filter(recipient = request.user)
+    if messages_recieved:
+        return True
+    else:
+        return False
+    if messages_recieved:
+        return True
+    else:
+        return False
+    return render(request, 'my_account.jade', {'messages_to':messages_to, 'messages_recieved':messages_recieved})
 # pay the deposit
 def process_payment(request):
     return HttpResponse('')

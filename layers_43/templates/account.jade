@@ -55,6 +55,11 @@ block content
                   a(href="#order-history") Order History
                 li
                   a(href="#settings") Settings
+                li
+                  form(role="form", action="{% url 'logout'%}", method="POST")
+                    input(type="hidden", name="user_instance", value="request.user.id")
+                    a(href="logout", action="submit", value="submit") Logout
+
           .col-md-9
             h2 Notifications
             .notifications#notifications

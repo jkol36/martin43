@@ -18,5 +18,9 @@ nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
           a(href='faq.html') FAQ
         li
           a(href='blog.html') Blog
-        li
-          a.btn.btn-default(href='login.html') Log in
+        if not request.user.is_authenticated
+          li
+            a.btn.btn-default(href='login.html') Log in
+        else
+          li
+            a.btn.btn-default(href="#") My Account

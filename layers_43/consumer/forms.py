@@ -34,6 +34,7 @@ class recipientForm(forms.ModelForm):
 	def __init__(self, user, *args, **kwargs):
 		super(recipientForm, self).__init__(*args, **kwargs)
 		change_class = self.fields['recipient'].widget.attrs['class'] = "form-control"
+		recipients = self.fields['recipient']._set_queryset(User.objects.all().exclude(username=user))
 		
 	class Meta:
 		model = Message

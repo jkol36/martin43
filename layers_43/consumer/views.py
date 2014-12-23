@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse
-from django.contrib import messages
+from django.contrib import messages as MESSAGES
 from django.contrib.auth import logout
 from django.views.generic.base import RedirectView
 from django.views.generic import View
@@ -34,7 +34,7 @@ def login(request):
             user = authenticate(username=email, password=password)
             if user:
                 auth_login(request, user)
-                return redirect('submit_design')
+                return redirect('my_account')
             else:
                 return HttpResponse('user with that email/password does not exist')
         return HttpResponse('You did not submit either an email or password')
@@ -144,9 +144,26 @@ def show_discussion(request):
 
 
 # send a simple text based message
-def send_message(request):
-    return render(request, 'send_message.jade', {'recipient':recipientForm(user=request.user), 'project_form':projectForm(user=request.user.id)})
+@login_required
+def send_a_message(request):
+    recipient = recipientForm(request.user)
+    project = projectForm(request.user)
 
+    if request.POST:
+       recipient_user_id = request.POST.get('recipient')
+       project_id = request.POST.get('project')
+       message = request.POST.get('message')
+       recipient_ = User.objects.get(pk=recipient_user_id)
+       project_ = Project.objects.get(pk=project_id)
+       new_message, created = Message.objects.get_or_create(sender=request.user, project=project_, recipient=recipient_, text=message)
+       new_message.save()
+       MESSAGES.success(request, "Your message was successfully sent!")
+    return render(request, 'send_a_message.jade', {'recipient':recipient, 'project':project})
+
+def messages(request):
+    my_messages = Message.objects.filter(recipient=request.user)
+    print my_messages
+    return render(request, 'messages.jade', {'my_messages':my_messages})
 
 # add a phot
 def inspiration_view(request):
@@ -194,17 +211,8 @@ def discussion_before(request, msg_id):
 def my_account(request):
     user_instance = request.user
     projects = Project.objects.filter(user=request.user)
-    messages_to = Message.objects.filter(sender = request.user)
-    messages_recieved = Message.objects.filter(recipient = request.user)
-    if messages_recieved:
-        return True
-    else:
-        return False
-    if messages_recieved:
-        return True
-    else:
-        return False
-    return render(request, 'my_account.jade', {'messages_to':messages_to, 'messages_recieved':messages_recieved})
+   
+    return render(request, 'account.jade')
 # pay the deposit
 def process_payment(request):
     return HttpResponse('')

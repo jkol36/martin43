@@ -48,6 +48,8 @@ block content
                 li
                   a(href="#notifications") Notifications
                 li
+                  a(href="{% url 'messages' %}") My Messages
+                li
                   a(href="#current-projects") Current Projects
                 li
                   a(href="#order-history") Order History
@@ -133,24 +135,24 @@ block content
                 .form-group
                   label(for="email").col-sm-3.control-label Email
                   div.col-sm-6
-                    input(type="email" placeholder="Email").form-control#email
+                    input(type="email", placeholder="Email").form-control#email
                 .form-group
                   label(for="email").col-sm-3.control-label Notification Emails
                   div.col-sm-6
                     label.radio-inline
-                      input(type="radio" name="notifications" value="yes")
+                      input(type="radio", name="notifications", value="yes")
                       | Yes
                     label.radio-inline
-                      input(type="radio" name="notifications" value="no")
+                      input(type="radio", name="notifications", value="no")
                       | No
                 .form-group
                   label(for="email").col-sm-3.control-label Newsletter
                   div.col-sm-6
                     label.radio-inline
-                      input(type="radio" name="newsletter" value="yes")
+                      input(type="radio", name="newsletter", value="yes")
                       | Yes
                     label.radio-inline
-                      input(type="radio" name="newsletter" value="no")
+                      input(type="radio", name="newsletter", value="no")
                       | No
                 .form-group
                   .col-sm-4.col-sm-offset-3

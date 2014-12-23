@@ -10,12 +10,14 @@ block content
       .container
         .row
           .col-md-4.col-md-offset-4
-            h1.text-center Log In
-            .form-group
-              input.form-control(type="text", placeholder="Email")
-            .form-group
-              input.form-control(type="password", placeholder="Password")
-            button.btn.btn-primary.btn-block Log in
+            form(role="form", method="POST", id="login_form", action="{% url 'login' %}")
+              -csrf_token
+              h1.text-center Log In
+              .form-group
+                input.form-control(type="text", name="email", placeholder="Email")
+              .form-group
+                input.form-control(type="password", name="password", placeholder="Password")
+            button.btn.btn-primary.btn-block(type="submit", value="submit", form="login_form") Log in
             p.signup
               | Don't have an account? 
               a(href="signup.html") Sign up

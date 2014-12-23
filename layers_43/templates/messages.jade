@@ -1,0 +1,35 @@
+extends ./partials/_base.jade
+
+block title
+  title 43Layers - My Messages
+
+block content
+  include  ./partials/_header.jade
+  .content
+    .container
+      .my-account
+        .row
+          .col-md-4
+          .col-md-4
+            h1.text-center My Messages
+          .col-md-4
+            a(href="{% url 'send_message' %}")
+              button.btn.btn-xlarge.btn-primary(style="width:100%;") Send a message
+        .profile#profile
+          if my_messages
+            for message in my_messages
+              .row
+                .col-md-4
+                  img.profile-picture(src="{{STATIC_URL}}/imgs")
+                .col-md-4
+                  h1.text-center {{message.sender}}
+                  h2.text-center {{message.recipient}}
+                .col-md-4 
+                  button.btn.btn-xlarge.btn-primary(style="margin-left:100px;") Reply
+          else
+            .row
+              .col-md-12
+                h1.text-center Your inbox is empty:(
+
+           
+                    

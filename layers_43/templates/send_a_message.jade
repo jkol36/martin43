@@ -1,0 +1,28 @@
+extends ./partials/_base.jade
+
+block title
+  title 43Layers - My Messages
+
+block content
+  include  ./partials/_header.jade
+  include display_messages.jade
+  .content
+    .container
+      .my-account
+        .row
+          .col-md-4
+          .col-md-4
+            form(role="form", id="send_message",action="{% url 'send_message'%}", method="POST")
+              - csrf_token
+              h1.text-center Send A Message
+              {{recipient}}
+              {{project}}
+              textarea.form-control(rows='5', name="message", placeholder="Your message")
+            button.btn.btn-xlarge.btn-primary(type="submit", value="submit", form="send_message") Send
+
+        
+          
+
+         
+
+           

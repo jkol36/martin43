@@ -148,7 +148,6 @@ def show_discussion(request):
 def send_a_message(request):
     recipient = recipientForm(request.user)
     project = projectForm(request.user)
-
     if request.POST:
        recipient_user_id = request.POST.get('recipient')
        project_id = request.POST.get('project')
@@ -157,12 +156,11 @@ def send_a_message(request):
        project_ = Project.objects.get(pk=project_id)
        new_message, created = Message.objects.get_or_create(sender=request.user, project=project_, recipient=recipient_, text=message)
        new_message.save()
-       MESSAGES.success(request, "Your message was successfully sent!")
+       return render(request, 'send_a_message.jade', {'alert':'Your message was successfully sent!'})
     return render(request, 'send_a_message.jade', {'recipient':recipient, 'project':project})
 
 def messages(request):
     my_messages = Message.objects.filter(recipient=request.user)
-    print my_messages
     return render(request, 'messages.jade', {'my_messages':my_messages})
 
 # add a phot
@@ -198,6 +196,20 @@ def add_photo(request):
 
 
     
+
+def respond_to_message(request):
+    if request.GET:
+        user_id = request.GET['respond_to']
+        user = User.objects.get(pk=user_id)
+        return render(request, 'respond.jade', {'user':user})
+    elif request.POST:
+        text = request.POST.get('message')
+        user_id = request.POST.get('respond_to')
+        user = User.objects.get(pk=user_id)
+        new_message = Message.objects.create(sender=request.user, text=text, recipient=user)
+        new_message.save()
+        return render(request, 'respond.jade', {'alert':'Success'})
+   
 
 
 

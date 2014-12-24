@@ -13,18 +13,11 @@ block content
           .col-md-4
           .col-md-4
             if not alert
-              form(role="form", id="send_message",action="{% url 'send_message'%}", method="POST")
+              form(role="form", id="send_message",action="{% url 'respond_to_message'%}", method="POST")
                 - csrf_token
-                h1.text-center Send A Message
-                {{recipient}}
-                {{project}}
+                h1.text-center Respond to {{user.username}}
+                input(type="hidden", name="respond_to", value="{{user.id}}")
                 textarea.form-control(rows='5', name="message", placeholder="Your message")
               button.btn.btn-xlarge.btn-primary(type="submit", value="submit", form="send_message") Send
-            else
-              h1.text-center(style="color:green") {{alert}}
-        
-          
-
-         
-
-           
+            if alert
+              h1.text-center(style="color:green;") {{alert}}

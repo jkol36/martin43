@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from models import Project, ProjectUpdateItem
+from models import Project, ProjectUpdateItem, Profile
 from layers_43.messaging.models import Message
 from sorl.thumbnail import ImageField
 
@@ -49,3 +49,8 @@ class projectForm(forms.ModelForm):
 	class Meta:
 		model = Message
 		exclude = ['text','recipient', 'sender']	
+
+class UploadPicForm(forms.ModelForm):
+	class Meta:
+		model = Profile
+		exclude=['description', 'has_profile_pic', 'user']

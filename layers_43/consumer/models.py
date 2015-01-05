@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.ForeignKey(User)
     description = models.CharField(max_length=250, null=True, blank=True)
-
+    photo = ImageField(upload_to='images/profile_pics', null=True, blank=True, default=None)
+    has_profile_pic = models.BooleanField(default=False, blank=True)
     def __unicode__(self):
         return self.description
 class Project(models.Model):
@@ -20,7 +21,8 @@ class Project(models.Model):
     description = models.CharField(max_length=255, null=True)
     budget = models.DecimalField(max_digits=10, null=True, blank=True, decimal_places=2)
     is_submitted = models.BooleanField(default=False)
-
+    shipping = models.BooleanField(blank=True, default=False)
+    designer = models.ForeignKey(User, null=True, blank=True)
     def __unicode__(self):
         return self.title
     def get_budget(self):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Project, ProjectUpdate, ProjectUpdateItem
+from models import Project, ProjectUpdate, ProjectUpdateItem, Profile
 from layers_43.messaging.models import Message
 
 # Register your models here.
@@ -15,6 +15,10 @@ class ProjectUpdateItemAdmin(admin.ModelAdmin):
 class messageAdmin(admin.ModelAdmin):
 	list_display = ['text', 'recipient', 'sender']
 
+class profileAdmin(admin.ModelAdmin):
+	list_display = ['description', 'photo', 'has_profile_pic']
+
+admin.site.register(Profile, profileAdmin)
 admin.site.register(Message, messageAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(ProjectUpdate, ProjectUpdateAdmin)

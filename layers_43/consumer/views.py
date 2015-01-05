@@ -8,14 +8,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.models import User
 from models import Project, ProjectUpdateItem, ProjectUpdate, Profile
-from forms import new_designForm, picture_form, UserForm, PassWordForm, recipientForm, projectForm
+from forms import new_designForm, picture_form, UserForm, PassWordForm, recipientForm, projectForm, UploadPicForm
 from layers_43.messaging.models import Message
 
 
 
 # Create your views here.
 def index(request):
-    if request.user.is_authenticated():
+    try:
+        projects = request.user.projects.all()
+    except Exception, NoProjects:
+        print NoProjects
+        projects = None
+    if request.user.is_authenticated() and projects != None:
+        return redirect('my_account')
+    elif request.user.is_authenticated() and projects == None:
         return redirect('submit_design')
     else:
         return render(request, 'index.jade')
@@ -126,8 +133,6 @@ def find_designer(request):
 @login_required
 def idea_bored(request):
     projects = request.user.projects.all()
-    for i in projects:
-        print i.photo
     current_project_status = False
     start_new_project = False
     view_design_bored = False
@@ -210,14 +215,29 @@ def discussion_before(request, msg_id):
 def my_account(request):
     user_instance = request.user
     projects = Project.objects.filter(user=request.user)
+    has_pic = Profile.objects.get(user=request.user).has_profile_pic
     try:
-        description = request.user.profiles_set.get(user=request.user)
+        profile_pic = Profile.objects.get(user=request.user).photo
+    except Exception, NoPic:
+        profile_pic = False
+    if request.FILES:
+        try:
+           profile = Profile.objects.get(user=request.user)
+           pic = request.FILES['profile_pic']
+           profile.photo = pic
+           profile.has_profile_pic = True
+           profile.save()
+        except Exception, e:
+            print e
+
+    try:
+        description = Profile.objects.get(user=request.user)
     except Exception, DoesNotExist:
+        print DoesNotExist
         description = None
-    return render(request, 'account.jade', {'description':description})
+    return render(request, 'account.jade', {'description':description, 'profile_pic':profile_pic, 'has_pic':has_pic, 'projects':projects})
 
 #add description view
-
 def add_description(request):
     if request.POST:
         description = request.POST['description']
@@ -227,6 +247,17 @@ def add_description(request):
     return redirect('my_account')
 
 
+#update settings view
+
+def update_settings(request):
+    if request.POST:
+        print request.POST
+        email = request.POST['email']
+        user = User.objects.get(email=request.user)
+        user.email = email
+        user.save()
+        return redirect('my_account')
+    return redirect('my_account')
 # pay the deposit
 def process_payment(request):
     return HttpResponse('')

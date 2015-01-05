@@ -1,5 +1,5 @@
 extends ./partials/_base.jade
-
+{% load thumbnail %}
 block title
   title 43Layers - My Account
 
@@ -12,7 +12,17 @@ block content
         .profile#profile
           .row
             .col-md-3
-              img.profile-picture(src='images/Deer_stir_products_page.jpg')
+              if profile_pic == False
+                form(role="form", action="{% url 'my_account' %}", enctype="multipart/form-data", method="POST")
+                  .form-group
+                    - csrf_token
+                    input(type="file", name="profile_pic")
+                  button.btn.btn-primary(type="submit", value="submit") Add
+              else
+                {% thumbnail profile_pic "100x100" crop="center" as im %}
+                img(src="{{im.url}}")
+                {% endthumbnail %}
+
             .col-md-7
               .row
                 .col-md-12
@@ -80,29 +90,23 @@ block content
               h2 Current Projects
               .table-responsive
                 table.table
-                  tr
-                    th Project Name
-                    th Order #
-                    th Designer
-                    th Due Date
-                    th Status
-                    th
-                  tr
-                    td Keys to Love
-                    td 12345678
-                    td Diego Taccioli
-                    td 9/12/2014
-                    td Shipping
-                    td
-                      a(href="#") View
-                  tr
-                    td Jewelry Nails
-                    td 12345678
-                    td Diego Taccioli
-                    td 9/25/2014
-                    td Design
-                    td
-                      a(href="#") View
+                  for i in projects
+                    tr
+                      th Name
+                      th ID
+                      th Designer
+                      th Due Date
+                      th Status
+                      th
+                    tr
+                      td {{i.title}}
+                      td {{i.id}}
+                      td {{i.designer}}
+                      td {{i.deadline}}
+                      td {{i.shipping}}
+                      td
+                        a(href="#") View
+                  
             .order-history#order-history
               h2 Order History
               .table-responsive
@@ -141,11 +145,12 @@ block content
                       span(aria-hidden="true").glyphicon.glyphicon-star
             .settings#settings
               h2 Settings
-              form.form-horizontal
+              form.form-horizontal(role="form", action="{% url 'update_settings' %}", method="POST")
+                - csrf_token
                 .form-group
                   label(for="email").col-sm-3.control-label Email
                   div.col-sm-6
-                    input(type="email", placeholder="Email").form-control#email
+                    input(type="email", name="email", placeholder="Email").form-control#email
                 .form-group
                   label(for="email").col-sm-3.control-label Notification Emails
                   div.col-sm-6
@@ -167,7 +172,7 @@ block content
                 .form-group
                   .col-sm-4.col-sm-offset-3
                     button(type="submit").btn.btn-secondary Cancel
-                    button(type="submit").btn.btn-primary Save
+                    button(type="submit", value="submit").btn.btn-primary Save
                   .col-sm-2.col-sm-offset-1
                     button(type="submit").btn.btn-default Deactivate Account
                     

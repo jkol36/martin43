@@ -1,6 +1,10 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
+<<<<<<< HEAD
 from layers_43.consumer.views import add_photo, find_designer, logout_view, signup, login, submit_design, messages, inspiration_view, index, idea_bored, send_a_message, my_account, add_description, update_settings
+=======
+from layers_43.consumer.views import add_photo, find_designer, logout_view, respond_to_message, signup, login, submit_design, messages, inspiration_view, index, idea_bored, send_a_message, my_account
+>>>>>>> 89d962e42367f762ce18112b77987a5249afdf98
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -18,8 +22,12 @@ urlpatterns = patterns(
     url(r'^inspiration', inspiration_view, name='inspiration_view'),
     url(r'^account', my_account, name="my_account"),
     url(r'^messages', messages, name="messages"),
+<<<<<<< HEAD
    url(r'^add_description', add_description, name="add_description"),
    url(r'update_settings', update_settings, name="update_settings"),
+=======
+    url(r'respond_to_message', respond_to_message, name="respond_to_message")
+>>>>>>> 89d962e42367f762ce18112b77987a5249afdf98
 )
 
 if settings.DEBUG:

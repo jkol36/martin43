@@ -43,7 +43,7 @@ class recipientForm(forms.ModelForm):
 class projectForm(forms.ModelForm):
 	def __init__(self, user, *args, **kwargs):
 		super(projectForm, self).__init__(*args, **kwargs)
-		self.fields['project'] = forms.ModelChoiceField(queryset = Project.objects.filter(user=user))
+		projects = self.fields['project']._set_queryset(Project.objects.filter(user=user))
 		change_class = self.fields['project'].widget.attrs['class'] = "form-control"
 
 	class Meta:

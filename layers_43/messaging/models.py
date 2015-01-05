@@ -9,7 +9,7 @@ class Message(models.Model):
 	text = models.CharField(max_length=250, null = True, blank = True)
 	recipient = models.ForeignKey(User, related_name = "recipient")
 	sender = models.ForeignKey(User, related_name = "sender")
-	project = models.ForeignKey(Project, related_name = "Projects")
+	project = models.ForeignKey(Project, null=True, blank=True, related_name = "Projects")
 
 	def __unicode__(self):
 		return self.text

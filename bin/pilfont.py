@@ -1,4 +1,4 @@
-#!/Users/Jon/webapps/43Layers-Beta/bin/python
+#!/Users/Jon/webapps/layers/bin/python
 #
 # The Python Imaging Library
 # $Id$

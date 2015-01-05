@@ -174,6 +174,37 @@ def inspiration_view(request):
     # http://django-storages.readthedocs.org/en/latest/
     return render(request, 'inspiration.jade')
 
+def edit_profile(request):
+    if request.POST:
+        try:
+            old_password = request.POST['old_password']
+        except Exception, NoOldPassword:
+             old_password = None
+        try:
+            first_name = request.POST['first_name']
+        except Exception, NoFirstName:
+            first_name = None
+        try:
+            last_name = request.POST['last_name']
+        except Exception, NoLastName:
+            last_name = None
+        try:
+            new_password1 = request.POST['new_password1']
+        except Exception, NoNewPassword:
+            new_password1 = None
+        try:
+            new_password2 = request.POST['new_password2']
+        except Exception, NoNewPassword2:
+            new_password2 = None
+        
+        if old_password and old_password != None and if new_password1 and new_password2 and new_password1 != None and new_password2 != None:
+            #attempt to authenticate the user with their old password
+            user = authenticate(user=request.user, password=old_password)
+            if user:
+                u = User.objects.get(email=request.user)
+                new_password = u.set_password()
+
+    return render(request, 'edit_profile.jade')
 def add_photo(request):
     if request.FILES:
         #project id for lookup

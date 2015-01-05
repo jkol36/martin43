@@ -1,0 +1,20 @@
+extends ./partials/_base.jade
+block title
+	title 43-Layers Edit Profile
+
+block content
+	include ./partials/_header.jade
+	.content
+		.container
+			.my_account
+				h1.text-center Edit Profile
+			.form
+				.row
+					.col-md-8.col-md-offset-4
+						form#edit_profile(role="form", method="POST", action="{% url 'edit_profile' %}")
+							.form-group
+								label(for="first_name") Change Your First Name
+								input.form-control#first_name(type="text", name="first_name", placeholder="Jon Smith")
+							.form-group
+								label(for="old_password") Enter your old password
+								input.form-control#change_password(type="password", name="old_password")

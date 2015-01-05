@@ -3,6 +3,7 @@ if MESSAGES
 		.row
 			.col-md-12
 				for message in MESSAGES
+					p message
 					if message.tags == "error"
 						thetag = "danger"
 					else

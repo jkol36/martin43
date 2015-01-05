@@ -16,13 +16,18 @@ block content
             .col-md-7
               .row
                 .col-md-12
-                  h3.name Tester McTesty
+                  h3.name {{request.user.first_name}} {{request.user.last_name}}
                 .col-md-12
-                  p.description
-                    | Room for 100 word description here... More words in this description. Even more words.
-                    | Room for 100 word description here... More words in this description. Even more words.
-                    | Room for 100 word description here... More words in this description. Even more words.
-                    | Room for 100 word description here... More words in this description. Even more words.
+                  if description == None
+                   form(role="form", action="{% url 'add_description' %}", method="POST")
+                    - csrf_token
+                    .form-group
+                      label(for="description").col-sm-3.control-label Add a description
+                      div.col-sm-6
+                        input.form-control(type="text", id="description", name="description")
+                      button.btn.btn-primary(type="submit", value="submit") Update
+                  else
+                    p.description {{description}}
                 .col-md-12
                   .row
                     .col-md-7

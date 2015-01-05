@@ -7,7 +7,7 @@ from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.models import User
-from models import Project, ProjectUpdateItem, ProjectUpdate
+from models import Project, ProjectUpdateItem, ProjectUpdate, Profile
 from forms import new_designForm, picture_form, UserForm, PassWordForm, recipientForm, projectForm
 from layers_43.messaging.models import Message
 
@@ -193,7 +193,6 @@ def add_photo(request):
             new_picture = ProjectUpdateItem.objects.create(photo=f, update = get_update)
             #save the picture object
             new_picture.save()
-        messages.success(request, "Success!")
     return HttpResponse('success')
 
 
@@ -211,8 +210,23 @@ def discussion_before(request, msg_id):
 def my_account(request):
     user_instance = request.user
     projects = Project.objects.filter(user=request.user)
-   
-    return render(request, 'account.jade')
+    try:
+        description = request.user.profiles_set.get(user=request.user)
+    except Exception, DoesNotExist:
+        description = None
+    return render(request, 'account.jade', {'description':description})
+
+#add description view
+
+def add_description(request):
+    if request.POST:
+        description = request.POST['description']
+        update_profile = Profile.objects.get_or_create(user=request.user, description=description)
+        print update_profile
+        return redirect('my_account')
+    return redirect('my_account')
+
+
 # pay the deposit
 def process_payment(request):
     return HttpResponse('')

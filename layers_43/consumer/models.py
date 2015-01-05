@@ -3,6 +3,12 @@ from sorl.thumbnail import ImageField
 from django.contrib.auth.models import User
 
 
+class Profile(models.Model):
+    user = models.ForeignKey(User)
+    description = models.CharField(max_length=250, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.description
 class Project(models.Model):
     user = models.ForeignKey(User, related_name='projects', null=True)
     title = models.CharField(max_length=255, null=True)

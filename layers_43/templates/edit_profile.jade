@@ -8,13 +8,22 @@ block content
 		.container
 			.my_account
 				h1.text-center Edit Profile
+			.row
+				.col-md-4
+					h2 Edit Account
+				.col-md-8
+					p
+						| Personal Information
 			.form
 				.row
 					.col-md-8.col-md-offset-4
 						form#edit_profile(role="form", method="POST", action="{% url 'edit_profile' %}")
+							- csrf_token
 							.form-group
 								label(for="first_name") Change Your First Name
-								input.form-control#first_name(type="text", name="first_name", placeholder="Jon Smith")
+								input.form-control#first_name(type="text", name="first_name", placeholder="Jon")
 							.form-group
-								label(for="old_password") Enter your old password
-								input.form-control#change_password(type="password", name="old_password")
+								label(for="last_name") Change Your Last Name
+								input.form-control#lastname(type="text", name="last_name", placeholder="Smith")
+							button.btn.btn-primary(type="submit", value="submit") Update
+							a(href="{% url 'my_account' %}").btn.btn-default Back 

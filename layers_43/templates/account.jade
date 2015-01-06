@@ -52,7 +52,8 @@ block content
                         a(href='http://www.pinterest.com/43layers')
                           img(src='icons/pinterest_black.png')
             .col-md-2
-              button(type="submit").btn.btn-default.btn-block Edit Profile
+              
+                a(href="{% url 'edit_profile' %}").btn.btn-default.btn-block  Edit Profile
         .row
           .col-md-3
             h2 Menu

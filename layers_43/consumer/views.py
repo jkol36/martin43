@@ -197,12 +197,15 @@ def edit_profile(request):
         except Exception, NoNewPassword2:
             new_password2 = None
         
-        if old_password and old_password != None and if new_password1 and new_password2 and new_password1 != None and new_password2 != None:
-            #attempt to authenticate the user with their old password
-            user = authenticate(user=request.user, password=old_password)
-            if user:
-                u = User.objects.get(email=request.user)
-                new_password = u.set_password()
+    	if first_name != None:
+    		user = User.objects.get(email=request.user)
+    		user.first_name = first_name
+    		user.save()
+
+    	elif last_name != None:
+    		user = User.objects.get(email=request.user)
+    		user.last_name = last_name
+    		user.save()
 
     return render(request, 'edit_profile.jade')
 def add_photo(request):

@@ -27,3 +27,19 @@ block content
 								input.form-control#lastname(type="text", name="last_name", placeholder="Smith")
 							button.btn.btn-primary(type="submit", value="submit") Update
 							a(href="{% url 'my_account' %}").btn.btn-default Back 
+			br
+			.row
+				.col-md-4
+					h2 Edit Profile
+				.col-md-8
+					p
+						| Location
+			.form
+				.row
+					.col-md-8.col-md-offset-4
+						form#edit_location(role="form", method="POST", action="{% url 'edit_location' %}")
+							- csrf_token
+							.form-group
+								label(for="location") Edit your Location
+								input.form-control#location(type="text", name="location", placeholder="Enter your city, state, and zip code")
+							button.btn.btn-primary(type="submit", value="submit") Update your location

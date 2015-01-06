@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
-from layers_43.consumer.views import add_photo, find_designer, logout_view, signup, login, submit_design, messages, inspiration_view, index, idea_bored, send_a_message, my_account, add_description, update_settings, respond_to_message, edit_profile, about, faq
+from layers_43.consumer.views import add_photo, find_designer, logout_view, signup, login, submit_design, messages, inspiration_view, index, idea_bored, send_a_message, my_account, add_description, update_settings, respond_to_message, edit_profile, about, faq, edit_location
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'edit_profile', edit_profile, name='edit_profile'),
     url(r'about', about, name='about'),
     url(r'faq', faq, name='faq'),
+    url(r'edit_location', edit_location, name="edit_location"),
 )
 
 

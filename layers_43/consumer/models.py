@@ -8,6 +8,7 @@ class Profile(models.Model):
     description = models.CharField(max_length=250, null=True, blank=True)
     photo = ImageField(upload_to='images/profile_pics', null=True, blank=True, default=None)
     has_profile_pic = models.BooleanField(default=False, blank=True)
+    location = models.CharField(max_length=250, default=False, blank=True, null=True)
     def __unicode__(self):
         return self.description
 class Project(models.Model):

@@ -41,7 +41,15 @@ block content
                 .col-md-12
                   .row
                     .col-md-7
-                      | San Francisco, California
+                      
+                      if location == None 
+                        a(href="{% url 'edit_profile' %}") Add a Location
+                      
+                      else
+                        {{location}}
+                   
+                      
+                        
                     .col-md-5.social
                         a(href='https://www.facebook.com/pages/43Layers/273568439486440')
                           img(src="{{STATIC_URL}}/icons/facebook_black.png")
@@ -97,7 +105,7 @@ block content
                       th ID
                       th Designer
                       th Due Date
-                      th Status
+                      th Ship Status
                       th
                     tr
                       td {{i.title}}

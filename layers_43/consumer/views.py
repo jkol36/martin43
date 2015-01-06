@@ -182,6 +182,16 @@ def faq(request):
 
 def blog(request):
 	return render(request, 'blog.jade')
+
+
+def edit_location(request):
+	if request.POST:
+		location = request.POST['location']
+		profile = Profile.objects.get(user=request.user)
+		profile.location = location
+		profile.save()
+		return redirect('my_account')
+	return redirect('edit_profile')
 def edit_profile(request):
     if request.POST:
         try:
@@ -270,6 +280,17 @@ def my_account(request):
     user_instance = request.user
     projects = Project.objects.filter(user=request.user)
     has_pic = Profile.objects.get(user=request.user).has_profile_pic
+    
+    try:
+    	location = Profile.objects.get(user=request.user).location
+    	if location == False:
+    		location = None
+    	else:
+    		location = location
+    	print location
+    except Exception, e:
+    	print e
+
     try:
         profile_pic = Profile.objects.get(user=request.user).photo
     except Exception, NoPic:
@@ -289,7 +310,8 @@ def my_account(request):
     except Exception, DoesNotExist:
         print DoesNotExist
         description = None
-    return render(request, 'account.jade', {'description':description, 'profile_pic':profile_pic, 'has_pic':has_pic, 'projects':projects})
+
+    return render(request, 'account.jade', {'description':description, 'location':location, 'profile_pic':profile_pic, 'has_pic':has_pic, 'projects':projects})
 
 #add description view
 def add_description(request):

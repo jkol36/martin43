@@ -174,6 +174,14 @@ def inspiration_view(request):
     # http://django-storages.readthedocs.org/en/latest/
     return render(request, 'inspiration.jade')
 
+def about(request):
+	return render(request, 'about.jade')
+
+def faq(request):
+	return render(request, 'faq.jade')
+
+def blog(request):
+	return render(request, 'blog.jade')
 def edit_profile(request):
     if request.POST:
         try:

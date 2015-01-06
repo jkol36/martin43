@@ -44,13 +44,13 @@ block content
                       | San Francisco, California
                     .col-md-5.social
                         a(href='https://www.facebook.com/pages/43Layers/273568439486440')
-                          img(src='icons/facebook_black.png')
+                          img(src="{{STATIC_URL}}/icons/facebook_black.png")
                         a(href='https://twitter.com/43Layers')
-                          img(src='icons/twitter_black.jpeg')
+                          img(src='{{STATIC_URL}}icons/twitter_black.jpeg')
                         a(href='http://instagram.com/43layers')
-                          img(src='icons/instagram_black.gif')
+                          img(src='{{STATIC_URL}}icons/instagram_black.gif')
                         a(href='http://www.pinterest.com/43layers')
-                          img(src='icons/pinterest_black.png')
+                          img(src='{{STATIC_URL}}icons/pinterest_black.png')
             .col-md-2
               
                 a(href="{% url 'edit_profile' %}").btn.btn-default.btn-block  Edit Profile
